@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="650" viewBox="0 0 900 650" fill="none">
+  <title>Lightway Kids illustrated world</title>
+  <desc>A warm illustrated landscape with two children reading an open Bible beneath a tree.</desc>
+  <rect width="900" height="650" rx="28" fill="#CDE8F2"/>
+  <circle cx="726" cy="132" r="69" fill="#F0C77D"/>
+  <path d="M103 129c0-23 19-42 42-42 5 0 10 1 14 3 10-23 33-39 60-39 35 0 64 28 65 63 20 2 36 18 36 38H103v-23Z" fill="#F8FCFA"/>
+  <path d="M571 205c0-19 15-34 34-34 4 0 8 1 12 2 8-19 27-32 49-32 29 0 53 23 54 52 16 2 30 15 30 31H571v-19Z" fill="#F8FCFA"/>
+  <path d="M0 341c150-92 315-92 469-13 151 78 287 68 431-9v331H0V341Z" fill="#C7DFC8"/>
+  <path d="M0 446c176-67 317-55 463 8 154 66 282 54 437-18v214H0V446Z" fill="#9CC69F"/>
+  <path d="M135 397c61-120 67-223 41-309 101 64 137 176 91 319" stroke="#4D7858" stroke-linecap="round" stroke-width="18"/>
+  <path d="M190 276c-57-2-96-30-121-81 66 2 108 26 121 81Zm18-68c-8-59 14-105 66-141 7 64-15 111-66 141Zm16 117c42-42 91-55 150-36-44 49-93 62-150 36Z" fill="#69956C"/>
+  <path d="M662 443c27-35 53-64 80-88" stroke="#4D7858" stroke-linecap="round" stroke-width="10"/>
+  <path d="M725 390c-28-7-44-23-48-49 29 7 45 23 48 49Zm8-21c5-26 22-41 50-44-6 27-22 43-50 44Z" fill="#78A278"/>
+  <path d="M333 406c0-40 29-71 65-71s65 31 65 71v78H333v-78Z" fill="#E78F68"/>
+  <circle cx="398" cy="315" r="34" fill="#C98F70"/>
+  <path d="M365 311c3-36 49-53 73-19-19-4-32-12-39-24-6 17-18 31-34 43Z" fill="#58483E"/>
+  <path d="M489 406c0-40 29-71 65-71s65 31 65 71v78H489v-78Z" fill="#4D8190"/>
+  <circle cx="554" cy="315" r="34" fill="#9C664F"/>
+  <path d="M521 309c7-36 52-48 75-13-20-2-33-9-41-20-5 17-17 29-34 38Z" fill="#3F473E"/>
+  <path d="M424 428c47-27 94-26 141 2v85c-47-28-94-29-141-2v-85Z" fill="#FFF9EA"/>
+  <path d="M565 430c47-28 94-29 141-2v85c-47-27-94-26-141 2v-85Z" fill="#F3E8D2"/>
+  <path d="M565 430v85m-112-62c30-10 60-9 89 3m-89 14c30-10 60-9 89 3m-89 14c30-10 60-9 89 3m58-20c29-12 59-13 89-4m-89 18c29-12 59-13 89-4m-89 18c29-12 59-13 89-4" stroke="#789080" stroke-linecap="round" stroke-width="4"/>
+  <path d="M258 543c-7-20 7-35 27-34 3-22 31-27 42-8 18-9 36 4 31 23 20 4 24 30 6 40h-82c-13-2-20-10-24-21Z" fill="#FFF9EA"/>
+  <path d="M190 568h8m486-18h7m-425 30h7m149-424h6m145 216h5" stroke="#F4D78F" stroke-linecap="round" stroke-width="8"/>
+</svg>

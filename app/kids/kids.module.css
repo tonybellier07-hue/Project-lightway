@@ -1,0 +1,267 @@
+.kidsIntro {
+  position: fixed;
+  z-index: 100;
+  inset: 0;
+  display: grid;
+  overflow: hidden;
+  place-items: center;
+  isolation: isolate;
+  background: #cce6f0;
+  color: var(--forest-deep);
+  transition: opacity 420ms ease;
+}
+
+.kidsIntro[data-leaving="true"] {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.kidsIntroScene {
+  position: absolute;
+  z-index: -1;
+  inset: 0;
+  object-fit: cover;
+  opacity: 0.55;
+}
+
+.kidsIntro::before {
+  position: absolute;
+  z-index: 0;
+  inset: 0;
+  background: linear-gradient(180deg, rgb(232 245 249 / 38%), rgb(246 240 225 / 28%));
+  content: "";
+}
+
+.kidsIntro::after {
+  position: absolute;
+  z-index: 1;
+  right: -12%;
+  bottom: -36%;
+  left: -12%;
+  height: 58%;
+  border-radius: 50% 50% 0 0;
+  background: rgb(156 198 159 / 78%);
+  content: "";
+}
+
+.introCloud {
+  position: absolute;
+  z-index: 2;
+  width: 8rem;
+  height: 2.5rem;
+  border-radius: 999px;
+  background: rgb(255 255 255 / 84%);
+}
+
+.introCloud::before,
+.introCloud::after {
+  position: absolute;
+  bottom: 0.5rem;
+  width: 3rem;
+  height: 3rem;
+  border-radius: 50%;
+  background: inherit;
+  content: "";
+}
+
+.introCloud::before { left: 1rem; }
+.introCloud::after { right: 1rem; width: 2.4rem; height: 2.4rem; }
+.introCloudLeft { top: 18%; left: 8%; animation: cloud-drift 14s ease-in-out infinite alternate; }
+.introCloudRight { top: 27%; right: 9%; transform: scale(0.75); animation: cloud-drift 18s ease-in-out infinite alternate-reverse; }
+
+.introSparkle {
+  position: absolute;
+  z-index: 2;
+  width: 0.75rem;
+  height: 0.75rem;
+  background: #f2c879;
+  clip-path: polygon(50% 0, 62% 38%, 100% 50%, 62% 62%, 50% 100%, 38% 62%, 0 50%, 38% 38%);
+}
+
+.introSparkleOne { top: 25%; left: 24%; animation: sparkle-float 2.6s ease-in-out infinite; }
+.introSparkleTwo { right: 24%; bottom: 28%; width: 0.55rem; height: 0.55rem; animation: sparkle-float 2.9s 0.4s ease-in-out infinite; }
+
+.skipIntro {
+  position: absolute;
+  z-index: 4;
+  top: max(1rem, env(safe-area-inset-top));
+  right: max(1rem, env(safe-area-inset-right));
+  display: inline-flex;
+  min-height: 2.75rem;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgb(22 58 48 / 30%);
+  border-radius: 999px;
+  background: rgb(255 255 255 / 90%);
+  padding: 0.5rem 1rem;
+  color: var(--forest-deep);
+  font-size: 0.875rem;
+  font-weight: 600;
+}
+
+.skipIntro:focus-visible { outline: 3px solid var(--kids-clay); outline-offset: 3px; }
+
+.introIdentity {
+  position: relative;
+  z-index: 3;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  color: var(--forest-deep);
+  text-align: center;
+}
+
+.introSdaMark { width: 2.5rem; height: 2.5rem; margin-bottom: 0.7rem; animation: identity-rise 550ms 0.1s both; }
+.introLightway,
+.introKids,
+.introTagline { opacity: 0; animation: identity-rise 650ms ease-out both; }
+.introLightway { font-size: 1.25rem; font-weight: 700; letter-spacing: 0.14em; animation-delay: 0.35s; }
+.introKids { color: var(--forest); font-size: 3.75rem; font-weight: 700; line-height: 1.05; letter-spacing: 0.04em; animation-name: kids-bounce-in; animation-delay: 0.85s; }
+.introTagline { margin-top: 0.75rem; font-size: 1.125rem; animation-delay: 1.55s; }
+
+.page {
+  --kids-warm: #f4f0e6;
+  --kids-sage: #e9f0e8;
+  --kids-sun: #d8ae70;
+  --kids-clay: #a85f47;
+  min-width: 0;
+  background: var(--paper);
+  color: var(--ink);
+}
+
+.hero { position: relative; border-bottom: 1px solid var(--rule); background: linear-gradient(180deg, #dceef5 0%, #f6f1e5 100%); }
+.heroLayout { display: grid; min-width: 0; grid-template-columns: minmax(0, 1fr); align-items: center; gap: 2rem; padding-block: 2.75rem 3rem; }
+.heroCopy { min-width: 0; max-width: 38rem; }
+.brandLabel,
+.eyebrow { color: var(--forest); font-size: 0.75rem; font-weight: 700; line-height: 1.4; letter-spacing: 0.06em; }
+.heroGreeting { margin-top: 1rem; color: var(--kids-clay); font-size: 0.875rem; font-weight: 700; }
+.heroCopy h1 { max-width: 13ch; margin-top: 0.25rem; color: var(--forest-deep); font-size: 2.875rem; font-weight: 500; line-height: 1.08; overflow-wrap: anywhere; }
+.heroPhrase { margin-top: 0.75rem; color: var(--forest); font-size: 0.75rem; font-weight: 700; letter-spacing: 0.04em; line-height: 1.5; }
+.heroDescription { max-width: 34rem; margin-top: 1rem; color: var(--muted); font-size: 1rem; line-height: 1.7; }
+.heroActions { display: flex; min-width: 0; flex-direction: column; flex-wrap: wrap; align-items: stretch; gap: 0.75rem; margin-top: 1.5rem; }
+.heroActions .primaryAction { gap: 0.65rem; }
+.primarySparkle { display: inline-grid; width: 1.25rem; height: 1.25rem; place-items: center; }
+.primarySparkle svg { width: 1.125rem; height: 1.125rem; }
+.primaryAction,
+.secondaryAction { display: inline-flex; max-width: 100%; min-width: 0; min-height: 2.75rem; align-items: center; justify-content: center; border: 1px solid var(--forest); border-radius: 0.375rem; padding: 0.65rem 1rem; font-size: 0.875rem; font-weight: 600; line-height: 1.35; text-align: center; text-decoration: none; white-space: normal; }
+.primaryAction { background: var(--forest); color: #fff; }
+.secondaryAction { background: rgb(255 255 255 / 45%); color: var(--forest); }
+.primaryAction:hover { background: var(--forest-deep); }
+.secondaryAction:hover { background: #fff; }
+.primaryAction:focus-visible,
+.secondaryAction:focus-visible { outline: 3px solid var(--kids-clay); outline-offset: 3px; }
+
+.heroWorld,
+.storyArtwork { position: relative; width: 100%; min-width: 0; margin: 0; aspect-ratio: 9 / 6.5; overflow: hidden; border-radius: 1rem; background: var(--kids-sage); }
+.heroWorld { max-width: 42rem; justify-self: center; }
+.heroWorldImage,
+.storyArtwork img { object-fit: cover; }
+.worldSparkleOne,
+.worldSparkleTwo { position: absolute; z-index: 1; width: 0.75rem; height: 0.75rem; border-radius: 50%; background: #f2c879; box-shadow: 0 0 0 0.3rem rgb(255 255 255 / 42%); animation: sparkle-float 3.2s ease-in-out infinite; }
+.worldSparkleOne { top: 20%; left: 19%; }
+.worldSparkleTwo { top: 31%; right: 19%; width: 0.5rem; height: 0.5rem; animation-delay: 0.8s; }
+
+.experience,
+.storySection,
+.growth,
+.family,
+.journey { min-width: 0; padding-block: 3rem 3.25rem; }
+.contentShell { min-width: 0; max-width: 76rem; }
+.experienceIntro { max-width: 56rem; margin-bottom: 1.75rem; }
+.sectionIntro { max-width: 46rem; margin-bottom: 1.5rem; }
+.experienceIntro h2,
+.sectionIntro h2,
+.storyCopy h2,
+.familyCopy h2,
+.journey h2 { max-width: 22ch; margin-top: 0.55rem; color: var(--ink); font-size: 1.875rem; font-weight: 500; line-height: 1.2; overflow-wrap: anywhere; }
+.experienceIntro > p:last-child,
+.sectionIntro > p:last-child { margin-top: 0.65rem; color: var(--muted); font-size: 0.9375rem; line-height: 1.65; }
+.resourceGroups { display: flex; min-width: 0; flex-direction: column; gap: 2.25rem; }
+.resourceGroup { min-width: 0; }
+.groupHeading { display: flex; min-width: 0; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 0.35rem 1rem; margin-bottom: 0.85rem; }
+.groupHeading h3 { color: var(--forest-deep); font-size: 1.125rem; font-weight: 700; }
+.groupHeading p { max-width: 38rem; color: var(--muted); font-size: 0.8125rem; line-height: 1.5; }
+.tileGrid { display: grid; min-width: 0; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0.75rem; margin: 0; padding: 0; list-style: none; }
+.tileItem { min-width: 0; }
+.tile { display: flex; width: 100%; min-width: 0; min-height: 10.5rem; flex-direction: column; align-items: flex-start; gap: 0.5rem; border: 1px solid rgb(22 58 48 / 8%); border-radius: 1rem; padding: 0.85rem; color: var(--forest-deep); text-decoration: none; transition: transform 180ms ease, box-shadow 180ms ease, border-color 180ms ease; }
+.toneSky { background: #dfedf5; }
+.toneLeaf { background: #e1eee1; }
+.toneSun { background: #f6edda; }
+.toneCoral { background: #f4e4dc; }
+.tileIconWrap { display: grid; width: 2.6rem; height: 2.6rem; min-width: 0; place-items: center; border: 1px solid rgb(22 58 48 / 9%); border-radius: 0.85rem; background: rgb(255 255 255 / 78%); color: var(--forest); transition: transform 180ms ease; }
+.tileIcon { width: 1.5rem; height: 1.5rem; }
+.tileTitle { min-width: 0; color: var(--forest-deep); font-size: 0.9375rem; font-weight: 600; line-height: 1.4; overflow-wrap: anywhere; }
+.tileDescription { min-width: 0; margin-top: auto; color: var(--muted); font-size: 0.75rem; line-height: 1.45; overflow-wrap: anywhere; }
+.tileAction { display: inline-flex; min-height: 1.75rem; align-items: center; gap: 0.35rem; color: var(--forest); font-size: 0.6875rem; font-weight: 700; }
+.tileLink:focus-visible { outline: 3px solid var(--forest); outline-offset: 3px; }
+
+@media (hover: hover) and (prefers-reduced-motion: no-preference) {
+  .tile:hover { transform: translateY(-3px) scale(1.015); border-color: rgb(22 58 48 / 18%); box-shadow: 0 10px 24px rgb(22 58 48 / 10%); }
+  .tile:hover .tileIconWrap { transform: translateY(-2px) rotate(-4deg); }
+}
+
+.storySection { background: var(--kids-sage); }
+.storyLayout { display: grid; min-width: 0; grid-template-columns: minmax(0, 1fr); align-items: center; gap: 2rem; }
+.storyArtwork { aspect-ratio: 3 / 2; background: var(--kids-warm); }
+.storyCopy { min-width: 0; max-width: 38rem; }
+.storyCopy h2 { max-width: 19ch; color: var(--forest-deep); }
+.storyCopy > p:not(.eyebrow) { margin-top: 0.85rem; color: var(--muted); font-size: 0.9375rem; line-height: 1.7; }
+.storyCopy .storyNote { border-left: 2px solid var(--kids-sun); padding-left: 0.8rem; color: var(--ink); font-size: 0.8125rem; }
+.growth { background: var(--kids-warm); }
+.growthStages { display: grid; min-width: 0; grid-template-columns: minmax(0, 1fr); margin: 1.75rem 0 0; padding: 0; list-style: none; }
+.growthStages li { min-width: 0; border-top: 2px solid var(--kids-sun); padding: 0.9rem 0.25rem 0.85rem 0; }
+.growthStageMark { display: block; width: 0.7rem; height: 0.7rem; margin-bottom: 0.65rem; border: 2px solid var(--kids-clay); border-radius: 50%; background: #fff; }
+.growthStages h3 { color: var(--forest-deep); font-size: 1rem; font-weight: 600; line-height: 1.4; overflow-wrap: anywhere; }
+.growthNote { margin-top: 0.7rem; color: var(--muted); font-size: 0.8125rem; line-height: 1.55; }
+.family { background: #fff; }
+.familyLayout { display: grid; min-width: 0; grid-template-columns: minmax(0, 1fr); align-items: center; gap: 1.75rem; }
+.familyCopy { min-width: 0; max-width: 42rem; }
+.familyCopy h2 { color: var(--forest-deep); }
+.familyCopy > p:not(.eyebrow) { margin-top: 0.85rem; color: var(--muted); font-size: 0.9375rem; line-height: 1.7; }
+.familyCopy .familySafety { border-left: 2px solid var(--kids-sun); padding-left: 0.8rem; color: var(--ink); font-size: 0.8125rem; }
+.familyPractices { display: grid; min-width: 0; grid-template-columns: repeat(2, minmax(0, 1fr)); margin: 0; border-top: 1px solid var(--rule); padding: 0; list-style: none; }
+.familyPractices li { min-width: 0; border-bottom: 1px solid var(--rule); padding: 0.85rem 0.25rem; color: var(--forest); font-size: 0.875rem; font-weight: 600; }
+.journey { border-top: 1px solid var(--rule); background: var(--kids-sage); }
+.journeySupporting { margin-top: 0.65rem; color: var(--forest); font-size: 1rem; font-weight: 500; }
+.journeyDescription { max-width: 48rem; margin-top: 0.65rem; color: var(--muted); font-size: 0.875rem; line-height: 1.65; }
+.journeyPath { display: flex; min-width: 0; flex-direction: column; align-items: flex-start; gap: 0.55rem; margin: 1.75rem 0 0; padding: 0; list-style: none; }
+.journeyPath li { display: flex; min-width: 0; flex-direction: column; align-items: flex-start; gap: 0.45rem; color: var(--forest-deep); font-size: 0.875rem; font-weight: 600; }
+.journeyNode { max-width: 100%; overflow-wrap: anywhere; }
+.journeyArrow { margin-left: 0.6rem; color: var(--kids-clay); transform: rotate(90deg); }
+.journeyNote { margin-top: 1rem; color: var(--muted); font-size: 0.8125rem; line-height: 1.55; }
+
+@media (min-width: 40rem) {
+  .experience, .storySection, .growth, .family, .journey { padding-block: 3.75rem 4rem; }
+  .tileGrid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .tile { min-height: 11rem; padding: 1rem; }
+  .growthStages { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1.25rem; }
+}
+
+@media (min-width: 52rem) {
+  .heroLayout { grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr); gap: 3rem; padding-block: 4rem; }
+  .heroCopy h1 { font-size: 3.5rem; }
+  .heroActions { flex-direction: row; align-items: center; }
+  .storyLayout { grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr); gap: 3rem; }
+  .familyLayout { grid-template-columns: minmax(0, 1.1fr) minmax(17rem, 0.9fr); gap: 3rem; }
+}
+
+@media (min-width: 72rem) {
+  .tileGrid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+  .heroCopy h1 { font-size: 4rem; }
+  .journeyPath { flex-direction: row; align-items: center; justify-content: space-between; gap: 0.75rem; }
+  .journeyPath li { min-width: 0; flex-direction: row; align-items: center; gap: 0.75rem; }
+  .journeyArrow { margin-left: 0; transform: none; }
+}
+
+@keyframes cloud-drift { from { translate: -0.4rem 0; } to { translate: 0.9rem 0.2rem; } }
+@keyframes sparkle-float { 0%, 100% { opacity: 0.75; transform: translateY(0) scale(0.92); } 50% { opacity: 1; transform: translateY(-0.5rem) scale(1.08); } }
+@keyframes identity-rise { from { opacity: 0; transform: translateY(0.8rem); } to { opacity: 1; transform: translateY(0); } }
+@keyframes kids-bounce-in { 0% { opacity: 0; transform: translateY(1.1rem) scale(0.94); } 70% { opacity: 1; transform: translateY(-0.2rem) scale(1.025); } 100% { opacity: 1; transform: translateY(0) scale(1); } }
+
+@media (prefers-reduced-motion: reduce) {
+  .kidsIntro { display: none; }
+  .kidsIntro *, .tile, .tileIconWrap, .worldSparkleOne, .worldSparkleTwo { animation: none !important; transition: none !important; }
+  .introLightway, .introKids, .introTagline { opacity: 1; transform: none; }
+}

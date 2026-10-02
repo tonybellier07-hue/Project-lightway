@@ -1,69 +1,87 @@
-import Image from "next/image";
+import TodayCard from "./components/today-card";
+import CommunityIntro from "./components/community-intro";
+import FeaturedMessage from "./components/featured-message";
+import FindYourPlace from "./components/find-your-place";
+import GiveToLightway from "./components/give-to-lightway";
+import SiteFooter from "./components/site-footer";
+import ThisWeekFeature from "./components/this-week-feature";
+import UpcomingEvents from "./components/upcoming-events";
+import { featuredMessage } from "./content/featured-message";
+import { demoMinistryEntries } from "./content/find-your-place";
+import { demoGivingSection } from "./content/give-to-lightway";
+import { siteFooterConfig } from "./content/site-footer";
+import { communityIntro } from "./content/community-intro";
+import { thisWeekFeature } from "./content/this-week-feature";
+import { upcomingEvents } from "./content/upcoming-events";
+
+const todayItems = [
+  {
+    id: "today-word",
+    number: "01",
+    label: "Today’s Word",
+    title: "A moment in the Word.",
+    description: "Daily Scripture and a short reflection will have a home here.",
+  },
+  {
+    id: "next-event",
+    number: "02",
+    label: "Next Event",
+    title: "What’s next at Lightway?",
+    description: "Upcoming gatherings and event details will be shared here.",
+  },
+  {
+    id: "stay-connected",
+    number: "03",
+    label: "Stay Connected",
+    title: "Life at Lightway, together.",
+    description: "Church news and ways to connect will be gathered here.",
+  },
+];
 
 export default function Home() {
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert h-5 w-[100px]"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the{" "}
-            <code className="rounded bg-black/[.06] px-1.5 py-0.5 font-mono text-[0.9em] dark:bg-white/[.08]">
-              page.tsx
-            </code>{" "}
-            file.
+    <main id="home" className="min-h-screen">
+      <section className="hero-section">
+        <div className="page-shell hero-copy">
+          <p className="hero-eyebrow">Lightway SDA Church</p>
+          <h1 className="hero-title">
+            One Church. One Platform.
+            <br />
+            <span>Everything Lightway.</span>
           </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
-        </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert h-[14px] w-4"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={14}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
+          <p className="hero-description">Worship. Grow. Connect. Serve.</p>
+          <a className="hero-link" href="#today">
+            Find your place today <span aria-hidden="true">&rarr;</span>
           </a>
         </div>
-      </main>
-    </div>
+      </section>
+
+      <ThisWeekFeature feature={thisWeekFeature} />
+
+      <UpcomingEvents events={upcomingEvents} />
+
+      <FeaturedMessage message={featuredMessage} />
+
+      <CommunityIntro content={communityIntro} />
+
+      <FindYourPlace ministries={demoMinistryEntries} />
+
+      <GiveToLightway content={demoGivingSection} />
+
+      <section id="today" className="page-shell today-section">
+        <div className="today-heading">
+          <p className="section-eyebrow">Your Lightway Today</p>
+          <h2>Stay connected with your church.</h2>
+        </div>
+
+        <div className="grid gap-4 md:grid-cols-3 md:gap-5">
+          {todayItems.map((item) => (
+            <TodayCard key={item.id} {...item} />
+          ))}
+        </div>
+      </section>
+
+      <SiteFooter config={siteFooterConfig} />
+    </main>
   );
 }

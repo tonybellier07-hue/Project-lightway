@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="640" viewBox="0 0 800 640" fill="none">
+  <title>Demo artwork of an open Bible beside a sunlit window</title>
+  <desc>An abstract illustration with no person depicted.</desc>
+  <rect width="800" height="640" fill="#DDE7DE"/>
+  <path d="M0 0h800v456H0z" fill="#E8EEE7"/>
+  <circle cx="607" cy="153" r="57" fill="#E6B78E"/>
+  <path d="M392 72h262v315H392z" fill="#B7CDBD"/>
+  <path d="M412 93h222v273H412z" fill="#D8E4D9"/>
+  <path d="M523 93v273M412 229h222" stroke="#6F8C7B" stroke-width="12"/>
+  <path d="m422 338 99-109 103 109v28H422z" fill="#E9DCC7" fill-opacity=".68"/>
+  <path d="M0 420c177-54 313-30 442 6 127 35 246 34 358-1v215H0z" fill="#C3D4C7"/>
+  <path d="M119 411c71-39 149-36 225 7v137c-76-42-154-46-225-7V411Z" fill="#FBF8F0"/>
+  <path d="M344 418c73-43 151-46 224-7v137c-73-39-151-35-224 7V418Z" fill="#F2EBDD"/>
+  <path d="M344 418v137m-186-93c45-18 91-16 137 3m-137 20c45-18 91-16 137 3m-137 20c45-18 91-16 137 3m73-23c44-19 89-21 134-7m-134 31c44-19 89-21 134-7m-134 31c44-19 89-21 134-7" stroke="#789080" stroke-width="5" stroke-linecap="round"/>
+  <path d="M0 586h800v54H0z" fill="#163A30"/>
+  <text x="400" y="620" fill="#F7F8F4" font-family="Arial, sans-serif" font-size="15" font-weight="700" letter-spacing="2" text-anchor="middle">ILLUSTRATIVE PLACEHOLDER</text>
+</svg>

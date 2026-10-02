@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="640" viewBox="0 0 960 640" fill="none">
+  <title>Illustration of an open Bible and a growing shoot</title>
+  <desc>A simple storybook illustration with a young plant growing into the light.</desc>
+  <rect width="960" height="640" fill="#E9F0E8"/>
+  <circle cx="718" cy="158" r="91" fill="#E7C697"/>
+  <path d="M0 392c183-77 334-63 486 0 151 63 291 60 474-17v265H0V392Z" fill="#D4E2D5"/>
+  <path d="M0 489c174-55 321-43 476 12 153 54 313 47 484-16v155H0V489Z" fill="#BFD3C3"/>
+  <path d="M475 388c0-57 10-106 30-149" stroke="#527A5F" stroke-linecap="round" stroke-width="13"/>
+  <path d="M500 284c-49-11-77-39-84-85 52 12 80 40 84 85Zm7-39c8-46 37-72 87-78-10 48-39 75-87 78Z" fill="#789B7D"/>
+  <circle cx="480" cy="207" r="8" fill="#A85F47"/>
+  <path d="M234 413c81-45 161-42 242 8v133c-81-50-161-53-242-8V413Z" fill="#FFFBF2"/>
+  <path d="M476 421c81-50 161-53 242-8v133c-81-45-161-42-242 8V421Z" fill="#F2E8D7"/>
+  <path d="M476 421v133m-190-96c51-17 103-15 154 5m-154 23c51-17 103-15 154 5m-154 23c51-17 103-15 154 5m72-33c50-20 101-23 153-8m-153 31c50-20 101-23 153-8m-153 31c50-20 101-23 153-8" stroke="#849786" stroke-linecap="round" stroke-width="6"/>
+  <path d="M414 374c21-26 42-48 65-67" stroke="#E7C697" stroke-linecap="round" stroke-width="4"/>
+  <path d="M534 322c26-29 50-49 76-62" stroke="#E7C697" stroke-linecap="round" stroke-width="4"/>
+</svg>

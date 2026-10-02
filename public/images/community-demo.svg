@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="700" viewBox="0 0 960 700" fill="none">
+  <title>Demo illustration of a community gathered together</title>
+  <desc>A calm, abstract gathering scene with stylized figures; not a Lightway photograph.</desc>
+  <rect width="960" height="700" fill="#E8EEE7"/>
+  <path d="M0 0h960v477H0z" fill="#DCE8DE"/>
+  <path d="M148 96h664v381H148z" fill="#F7F8F4"/>
+  <path d="M181 128h598v314H181z" fill="#E7EFE7"/>
+  <path d="M480 128v314M181 285h598" stroke="#C5D5C9" stroke-width="10"/>
+  <circle cx="480" cy="219" r="52" fill="#E4B98E"/>
+  <path d="M445 220c1-46 72-59 88-7-21-8-33-21-40-34-10 20-26 32-48 41Z" fill="#526A58"/>
+  <path d="M398 444c0-68 35-110 82-110s82 42 82 110v34H398v-34Z" fill="#1D4A3C"/>
+  <circle cx="294" cy="293" r="38" fill="#D9AA80"/>
+  <path d="M268 296c-1-34 49-54 76-15-21-4-36-14-43-26-7 18-18 31-33 41Z" fill="#735A48"/>
+  <path d="M228 442c0-56 27-91 66-91s66 35 66 91v36H228v-36Z" fill="#B7CDBD"/>
+  <circle cx="666" cy="293" r="38" fill="#C9916E"/>
+  <path d="M629 289c12-41 67-40 77 4-18-8-32-18-41-33-8 15-21 25-36 29Z" fill="#45594A"/>
+  <path d="M600 442c0-56 27-91 66-91s66 35 66 91v36H600v-36Z" fill="#D9B995"/>
+  <path d="M0 489c181-43 328-30 480 17 155 48 309 43 480-8v202H0V489Z" fill="#C5D6C8"/>
+  <path d="M0 627h960v73H0z" fill="#163A30"/>
+  <text x="480" y="672" fill="#F7F8F4" font-family="Arial, sans-serif" font-size="17" font-weight="700" letter-spacing="3" text-anchor="middle">ILLUSTRATIVE DEMO COMMUNITY</text>
+</svg>

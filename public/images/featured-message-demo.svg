@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="640" viewBox="0 0 960 640" fill="none">
+  <title>Demo message illustration with an open book and sound waves</title>
+  <desc>A stylized, abstract illustration with no person depicted.</desc>
+  <rect width="960" height="640" fill="#163A30"/>
+  <path d="M0 0h960v640H0z" fill="#1D4A3C"/>
+  <path d="M0 470c144-90 270-103 413-35 145 69 262 56 547-79v284H0V470Z" fill="#245643"/>
+  <circle cx="744" cy="173" r="76" fill="#D9B995" fill-opacity=".85"/>
+  <path d="M179 158v111m-34-82c-25 18-25 53 0 71m68-71c25 18 25 53 0 71m-103-102c-42 32-42 101 0 133m138-133c42 32 42 101 0 133" stroke="#B9D3C2" stroke-linecap="round" stroke-width="7"/>
+  <path d="M272 379c80-43 167-43 258 4v144c-91-47-178-47-258-4V379Z" fill="#F7F4EA"/>
+  <path d="M530 383c89-47 176-47 258-4v144c-82-43-169-43-258 4V383Z" fill="#E8E1D2"/>
+  <path d="M530 383v144m-209-104c55-20 110-18 166 5m-166 23c55-20 110-18 166 5m-166 23c55-20 110-18 166 5m80-37c54-22 108-26 163-12m-163 37c54-22 108-26 163-12m-163 37c54-22 108-26 163-12" stroke="#789080" stroke-linecap="round" stroke-width="6"/>
+  <path d="M0 590h960v50H0z" fill="#102D25"/>
+  <text x="480" y="622" fill="#F7F8F4" font-family="Arial, sans-serif" font-size="16" font-weight="700" letter-spacing="3" text-anchor="middle">ILLUSTRATIVE DEMO MESSAGE</text>
+</svg>
