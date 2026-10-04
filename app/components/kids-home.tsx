@@ -1,154 +1,13 @@
 import Image from "next/image";
-import Link from "next/link";
 import type { KidsHomeContent } from "../content/kids-home";
-import type {
-  KidsResourceIcon,
-  KidsResourcePreview,
-  KidsResourceTone,
-} from "../content/kids-home";
 import KidsIntro from "./kids-intro";
+import KidsTile from "./kids-tile";
+import { BirdFriend, LumiMascot, SproutFriend } from "./kids-characters";
 import styles from "../kids/kids.module.css";
 
 type KidsHomeProps = {
   content: KidsHomeContent;
 };
-
-const toneClasses: Record<KidsResourceTone, string> = {
-  sky: styles.toneSky,
-  leaf: styles.toneLeaf,
-  sun: styles.toneSun,
-  coral: styles.toneCoral,
-};
-
-function KidsTileIcon({ name }: { name: KidsResourceIcon }) {
-  return (
-    <svg
-      aria-hidden="true"
-      className={styles.tileIcon}
-      fill="none"
-      stroke="currentColor"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      strokeWidth="1.7"
-      viewBox="0 0 32 32"
-    >
-      {name === "bible" && (
-        <>
-          <path d="M16 8c-4-3-8-3-12-1v19c4-2 8-2 12 1m0-19c4-3 8-3 12-1v19c-4-2-8-2-12 1V8Z" />
-          <path d="M16 8v19m-8-14h3m-3 4h3m10-4h3m-3 4h3" />
-        </>
-      )}
-      {name === "story" && (
-        <>
-          <path d="M9 5h12l4 4v18H9a3 3 0 0 1-3-3V8a3 3 0 0 1 3-3Z" />
-          <path d="M21 5v5h5M12 15h9m-9 4h9" />
-        </>
-      )}
-      {name === "verse" && (
-        <>
-          <path d="m16 4 3.5 7 7.5 1.1-5.5 5.3 1.3 7.5-6.8-3.6-6.8 3.6 1.3-7.5L5 12.1l7.5-1.1L16 4Z" />
-          <path d="M12 15h8" />
-        </>
-      )}
-      {name === "school" && (
-        <>
-          <path d="m3 12 13-8 13 8M6 13v14h20V13M12 27V17h8v10" />
-          <path d="M10 13h.01m12 0h.01" />
-        </>
-      )}
-      {name === "game" && (
-        <>
-          <path d="M10 11h12a6 6 0 0 1 5.8 4.5l1.5 6a3.5 3.5 0 0 1-5.7 3.5L19 22H13l-4.6 3a3.5 3.5 0 0 1-5.7-3.5l1.5-6A6 6 0 0 1 10 11Z" />
-          <path d="M10 15v6m-3-3h6m9-1h.01m3 3h.01" />
-        </>
-      )}
-      {name === "activity" && (
-        <>
-          <path d="m16 4 2.2 7.8L26 14l-7.8 2.2L16 24l-2.2-7.8L6 14l7.8-2.2L16 4Z" />
-          <path d="m25 22 .9 3.1L29 26l-3.1.9L25 30l-.9-3.1L21 26l3.1-.9L25 22Z" />
-        </>
-      )}
-      {name === "color" && (
-        <>
-          <path d="M16 4a12 12 0 1 0 0 24h2.2a3 3 0 0 0 2.1-5.1 2.5 2.5 0 0 1 1.8-4.3H25A3 3 0 0 0 28 15 12 12 0 0 0 16 4Z" />
-          <path d="M10 14h.01m4-5h.01m7 3h.01m-9 10h.01" />
-        </>
-      )}
-      {name === "quiz" && (
-        <>
-          <circle cx="16" cy="16" r="12" />
-          <path d="M12.5 12a3.7 3.7 0 1 1 6.5 2.4c-1.7 1.8-3 2-3 4.1m0 4h.01" />
-        </>
-      )}
-      {name === "challenge" && (
-        <>
-          <path d="M16 4 19 11l7 1-5 5 1.2 7L16 21l-6.2 3 1.2-7-5-5 7-1 3-7Z" />
-          <path d="m23 5 1 2 2 .3-1.5 1.4L25 11l-2-1-2 1 .4-2.3L20 7.3l2-.3 1-2Z" />
-        </>
-      )}
-      {name === "music" && (
-        <>
-          <path d="M20 20V5l9-2v14" />
-          <circle cx="16" cy="21" r="4" />
-          <circle cx="25" cy="18" r="4" />
-        </>
-      )}
-      {name === "prayer" && (
-        <>
-          <path d="M11 5v10l5 4 5-4V5m-10 4 5 5 5-5m-10 6-5 5a3 3 0 0 0 0 4l4 3m11-12 5 5a3 3 0 0 1 0 4l-4 3m-6-10v12" />
-        </>
-      )}
-      {name === "watch" && (
-        <>
-          <rect x="3" y="6" width="26" height="20" rx="4" />
-          <path d="m13 11 8 5-8 5V11Z" />
-        </>
-      )}
-      {name === "journey" && (
-        <>
-          <circle cx="7" cy="24" r="3" />
-          <circle cx="25" cy="8" r="3" />
-          <path d="M10 24h5a5 5 0 0 0 5-5v-6a5 5 0 0 1 5-5" />
-        </>
-      )}
-    </svg>
-  );
-}
-
-function ResourceTile({ resource }: { resource: KidsResourcePreview }) {
-  const className = `${styles.tile} ${toneClasses[resource.tone]}`;
-  const contents = (
-    <>
-      <span className={styles.tileIconWrap}>
-        <KidsTileIcon name={resource.icon} />
-      </span>
-      <h4 className={styles.tileTitle}>{resource.title}</h4>
-      <span className={styles.tileDescription}>{resource.description}</span>
-      {resource.resourceUrl && (
-        <span className={styles.tileAction} aria-hidden="true">
-          {resource.resourceUrl === "/bible" ? "Open Bible" : "Explore story"}
-          <span> &rarr;</span>
-        </span>
-      )}
-    </>
-  );
-
-  return (
-    <li className={styles.tileItem}>
-      {resource.resourceUrl ? (
-        <Link
-          className={`${className} ${styles.tileLink}`}
-          href={resource.resourceUrl}
-          aria-label={`${resource.title}: ${resource.description}`}
-        >
-          {contents}
-        </Link>
-      ) : (
-        <article className={className}>{contents}</article>
-      )}
-    </li>
-  );
-}
 
 export default function KidsHome({ content }: KidsHomeProps) {
   const visibleResources = content.resources
@@ -187,17 +46,42 @@ export default function KidsHome({ content }: KidsHomeProps) {
               </div>
             </div>
 
-            <div className={styles.heroWorld}>
-              <Image
-                className={styles.heroWorldImage}
-                src={content.image}
-                alt={content.imageAlt}
-                fill
-                priority
-                sizes="(min-width: 52rem) 42vw, 100vw"
-              />
-              <span className={styles.worldSparkleOne} aria-hidden="true" />
-              <span className={styles.worldSparkleTwo} aria-hidden="true" />
+            {/* Decorative Kids world scene. The accessible hero copy above is
+                the single source of meaning for this section. */}
+            <div className={styles.heroWorld} aria-hidden="true">
+              <span className={styles.worldSun} />
+              <span className={`${styles.worldCloud} ${styles.worldCloudOne}`} />
+              <span className={`${styles.worldCloud} ${styles.worldCloudTwo}`} />
+              <span className={`${styles.worldOrb} ${styles.worldOrbOne}`} />
+              <span className={`${styles.worldOrb} ${styles.worldOrbTwo}`} />
+              <span className={`${styles.worldHill} ${styles.worldHillBack}`} />
+              <span className={`${styles.worldHill} ${styles.worldHillFront}`} />
+              <span className={styles.worldSparkleOne} />
+              <span className={styles.worldSparkleTwo} />
+
+              <div className={styles.worldBubble}>
+                <span className={styles.worldBubbleKicker}>LIGHTWAY</span>
+                <span className={styles.worldBubbleTitle}>KIDS</span>
+                <span
+                  className={`${styles.worldParticle} ${styles.worldParticleOne}`}
+                />
+                <span
+                  className={`${styles.worldParticle} ${styles.worldParticleTwo}`}
+                />
+                <span
+                  className={`${styles.worldParticle} ${styles.worldParticleThree}`}
+                />
+              </div>
+
+              <span className={styles.worldLumi}>
+                <LumiMascot size={128} />
+              </span>
+              <span className={styles.worldBird}>
+                <BirdFriend size={96} />
+              </span>
+              <span className={styles.worldSprout}>
+                <SproutFriend size={112} />
+              </span>
             </div>
           </div>
         </section>
@@ -228,7 +112,7 @@ export default function KidsHome({ content }: KidsHomeProps) {
                     </header>
                     <ul className={styles.tileGrid}>
                       {groupResources.map((resource) => (
-                        <ResourceTile key={resource.id} resource={resource} />
+                        <KidsTile key={resource.id} resource={resource} />
                       ))}
                     </ul>
                   </section>

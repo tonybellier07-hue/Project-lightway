@@ -1,14 +1,25 @@
+/* =========================================================
+   LIGHTWAY KIDS INTRO
+   A deliberate five-second opening of the Kids world:
+   0.0-1.0s the world opens, 1.0-2.0s the SDA identity lands,
+   2.0-3.5s the LIGHTWAY KIDS bubble arrives, 3.5-4.5s the
+   adventure prompt, 4.5-5.0s the hand-off into the page.
+   The stage reuses the Kids page sky + horizon verbatim so
+   the reveal reads as one continuous space, not a loading
+   screen that cuts away.
+   ========================================================= */
+
 .kidsIntro {
   position: fixed;
   z-index: 100;
   inset: 0;
   display: grid;
-  overflow: hidden;
   place-items: center;
+  overflow: hidden;
   isolation: isolate;
-  background: #cce6f0;
-  color: var(--forest-deep);
-  transition: opacity 420ms ease;
+  background: #70d5ff;
+  color: var(--kids-dark);
+  transition: opacity 500ms ease;
 }
 
 .kidsIntro[data-leaving="true"] {
@@ -16,252 +27,1865 @@
   pointer-events: none;
 }
 
+/* Exit choreography (4.5s -> 5.0s): the identity lifts away
+   while the world pushes forward, so the page underneath
+   feels like somewhere the child has entered. Transitions
+   live on these rules only, so the entrance animations never
+   fight them. */
+@media (prefers-reduced-motion: no-preference) {
+  .kidsIntro[data-leaving="true"] .introIdentity {
+    translate: 0 -2rem;
+    opacity: 0;
+    transition:
+      translate 500ms cubic-bezier(0.4, 0, 0.9, 0.5),
+      opacity 420ms ease-in;
+  }
+
+  .kidsIntro[data-leaving="true"] .introStage {
+    scale: 1.06;
+    transition: scale 500ms cubic-bezier(0.22, 0.61, 0.36, 1);
+  }
+
+  .kidsIntro[data-leaving="true"] .introStage::after {
+    translate: 0 -7%;
+    transition: translate 500ms ease-out;
+  }
+}
+
+/* The world itself: the same sky the Kids page hero uses. */
+.introStage {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  background: linear-gradient(180deg, #70d5ff 0%, #c7f4ff 68%, #f9edbd 100%);
+  animation: intro-open 800ms ease-out backwards;
+}
+
 .kidsIntroScene {
   position: absolute;
-  z-index: -1;
   inset: 0;
-  object-fit: cover;
-  opacity: 0.55;
-}
-
-.kidsIntro::before {
-  position: absolute;
   z-index: 0;
-  inset: 0;
-  background: linear-gradient(180deg, rgb(232 245 249 / 38%), rgb(246 240 225 / 28%));
-  content: "";
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0.2;
 }
 
-.kidsIntro::after {
+.introStage::before {
   position: absolute;
+  inset: 0;
   z-index: 1;
-  right: -12%;
-  bottom: -36%;
-  left: -12%;
-  height: 58%;
-  border-radius: 50% 50% 0 0;
-  background: rgb(156 198 159 / 78%);
+  background:
+    radial-gradient(circle at 15% 20%, rgb(255 255 255 / 75%) 0 3rem, transparent 3.2rem),
+    radial-gradient(circle at 85% 25%, rgb(255 255 255 / 65%) 0 4rem, transparent 4.2rem),
+    radial-gradient(circle at 50% 5%, rgb(255 255 255 / 40%) 0 2rem, transparent 2.2rem);
   content: "";
+  animation: intro-fade 700ms 150ms ease-out backwards;
+}
+
+/* Horizon — the exact colour and sweep of .hero::after. */
+.introStage::after {
+  position: absolute;
+  right: -5%;
+  bottom: -18%;
+  left: -5%;
+  z-index: 4;
+  height: 35%;
+  border-radius: 50% 50% 0 0;
+  background: #70cc76;
+  box-shadow: inset 0 1rem rgb(255 255 255 / 15%);
+  content: "";
+  animation: hill-settle 900ms 200ms cubic-bezier(0.22, 0.61, 0.36, 1) backwards;
+}
+
+.introSun {
+  position: absolute;
+  top: 11%;
+  right: 7%;
+  z-index: 2;
+  width: clamp(3.5rem, 13vw, 7rem);
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: var(--kids-yellow);
+  box-shadow:
+    0 0 0 0.6rem rgb(255 224 91 / 30%),
+    0 0 2.5rem rgb(255 224 91 / 70%);
+  animation:
+    intro-fade 700ms 400ms ease-out backwards,
+    sun-glow 5.5s 400ms ease-in-out infinite;
+}
+
+.introSun::before {
+  position: absolute;
+  inset: -26%;
+  border: 3px dashed rgb(255 224 91 / 95%);
+  border-radius: 50%;
+  content: "";
+  animation: sun-spin 32s linear infinite;
 }
 
 .introCloud {
   position: absolute;
-  z-index: 2;
-  width: 8rem;
-  height: 2.5rem;
+  z-index: 3;
+  width: clamp(6.5rem, 26vw, 12rem);
+  aspect-ratio: 3 / 1;
   border-radius: 999px;
-  background: rgb(255 255 255 / 84%);
+  background: rgb(255 255 255 / 88%);
+  box-shadow: 0 0.5rem 1rem rgb(50 130 160 / 12%);
 }
 
 .introCloud::before,
 .introCloud::after {
   position: absolute;
-  bottom: 0.5rem;
-  width: 3rem;
-  height: 3rem;
+  bottom: 0.4rem;
   border-radius: 50%;
   background: inherit;
   content: "";
 }
 
-.introCloud::before { left: 1rem; }
-.introCloud::after { right: 1rem; width: 2.4rem; height: 2.4rem; }
-.introCloudLeft { top: 18%; left: 8%; animation: cloud-drift 14s ease-in-out infinite alternate; }
-.introCloudRight { top: 27%; right: 9%; transform: scale(0.75); animation: cloud-drift 18s ease-in-out infinite alternate-reverse; }
+.introCloud::before {
+  left: 13%;
+  width: 34%;
+  height: 110%;
+}
+
+.introCloud::after {
+  right: 13%;
+  width: 26%;
+  height: 84%;
+}
+
+.introCloudLeft {
+  top: 17%;
+  left: 4%;
+  animation:
+    intro-fade 700ms 300ms ease-out backwards,
+    cloud-drift 12s ease-in-out infinite alternate;
+}
+
+.introCloudRight {
+  top: 21%;
+  right: 4%;
+  transform: scale(0.75);
+  animation:
+    intro-fade 700ms 500ms ease-out backwards,
+    cloud-drift 15s ease-in-out infinite alternate-reverse;
+}
+
+.introOrb {
+  position: absolute;
+  z-index: 3;
+  aspect-ratio: 1;
+  border: 3px solid rgb(255 255 255 / 85%);
+  border-radius: 50%;
+  background: rgb(255 255 255 / 32%);
+  box-shadow: inset 0.2rem 0.25rem 0 rgb(255 255 255 / 75%);
+}
+
+.introOrbOne {
+  top: 44%;
+  left: 3%;
+  width: clamp(1.6rem, 6vw, 2.6rem);
+  animation:
+    intro-pop 600ms 700ms ease-out backwards,
+    orb-float 6.5s 1500ms ease-in-out infinite;
+}
+
+.introOrbTwo {
+  top: 47%;
+  right: 5%;
+  width: clamp(1.2rem, 4.5vw, 2rem);
+  animation:
+    intro-pop 600ms 900ms ease-out backwards,
+    orb-float 8s 1750ms ease-in-out infinite;
+}
 
 .introSparkle {
   position: absolute;
-  z-index: 2;
-  width: 0.75rem;
-  height: 0.75rem;
-  background: #f2c879;
-  clip-path: polygon(50% 0, 62% 38%, 100% 50%, 62% 62%, 50% 100%, 38% 62%, 0 50%, 38% 38%);
+  z-index: 5;
+  width: 1rem;
+  height: 1rem;
+  border-radius: 50%;
+  background: var(--kids-yellow);
+  box-shadow: 0 0 0 0.35rem rgb(255 255 255 / 45%);
 }
 
-.introSparkleOne { top: 25%; left: 24%; animation: sparkle-float 2.6s ease-in-out infinite; }
-.introSparkleTwo { right: 24%; bottom: 28%; width: 0.55rem; height: 0.55rem; animation: sparkle-float 2.9s 0.4s ease-in-out infinite; }
+.introSparkleOne {
+  top: 23%;
+  left: 18%;
+  animation:
+    intro-pop 600ms 600ms ease-out backwards,
+    sparkle-float 2.4s 1300ms ease-in-out infinite;
+}
+
+.introSparkleTwo {
+  top: 40%;
+  right: 7%;
+  width: 0.7rem;
+  height: 0.7rem;
+  animation:
+    intro-pop 600ms 850ms ease-out backwards,
+    sparkle-float 2.8s 1550ms ease-in-out infinite;
+}
+
+.introSparkleThree {
+  bottom: 14%;
+  left: 40%;
+  width: 0.8rem;
+  height: 0.8rem;
+  animation:
+    intro-pop 600ms 1100ms ease-out backwards,
+    sparkle-float 3.2s 1800ms ease-in-out infinite;
+}
 
 .skipIntro {
   position: absolute;
-  z-index: 4;
+  z-index: 10;
   top: max(1rem, env(safe-area-inset-top));
   right: max(1rem, env(safe-area-inset-right));
-  display: inline-flex;
   min-height: 2.75rem;
-  align-items: center;
-  justify-content: center;
-  border: 1px solid rgb(22 58 48 / 30%);
+  border: 2px solid rgb(22 58 48 / 20%);
   border-radius: 999px;
   background: rgb(255 255 255 / 90%);
-  padding: 0.5rem 1rem;
-  color: var(--forest-deep);
-  font-size: 0.875rem;
-  font-weight: 600;
+  padding: 0.6rem 1rem;
+  color: var(--kids-dark);
+  font-size: 0.8rem;
+  font-weight: 800;
+  cursor: pointer;
 }
 
-.skipIntro:focus-visible { outline: 3px solid var(--kids-clay); outline-offset: 3px; }
+.skipIntro:focus-visible {
+  outline: 4px solid var(--kids-yellow);
+  outline-offset: 3px;
+}
 
 .introIdentity {
   position: relative;
-  z-index: 3;
+  z-index: 5;
   display: flex;
+  width: min(100% - 1.5rem, 34rem);
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 2rem;
-  color: var(--forest-deep);
   text-align: center;
 }
 
-.introSdaMark { width: 2.5rem; height: 2.5rem; margin-bottom: 0.7rem; animation: identity-rise 550ms 0.1s both; }
-.introLightway,
-.introKids,
-.introTagline { opacity: 0; animation: identity-rise 650ms ease-out both; }
-.introLightway { font-size: 1.25rem; font-weight: 700; letter-spacing: 0.14em; animation-delay: 0.35s; }
-.introKids { color: var(--forest); font-size: 3.75rem; font-weight: 700; line-height: 1.05; letter-spacing: 0.04em; animation-name: kids-bounce-in; animation-delay: 0.85s; }
-.introTagline { margin-top: 0.75rem; font-size: 1.125rem; animation-delay: 1.55s; }
-
-.page {
-  --kids-warm: #f4f0e6;
-  --kids-sage: #e9f0e8;
-  --kids-sun: #d8ae70;
-  --kids-clay: #a85f47;
-  min-width: 0;
-  background: var(--paper);
-  color: var(--ink);
+.introSdaMark {
+  width: 2.75rem;
+  height: 2.75rem;
+  margin-bottom: 0.6rem;
+  animation: identity-rise 600ms 1000ms ease-out backwards;
 }
 
-.hero { position: relative; border-bottom: 1px solid var(--rule); background: linear-gradient(180deg, #dceef5 0%, #f6f1e5 100%); }
-.heroLayout { display: grid; min-width: 0; grid-template-columns: minmax(0, 1fr); align-items: center; gap: 2rem; padding-block: 2.75rem 3rem; }
-.heroCopy { min-width: 0; max-width: 38rem; }
-.brandLabel,
-.eyebrow { color: var(--forest); font-size: 0.75rem; font-weight: 700; line-height: 1.4; letter-spacing: 0.06em; }
-.heroGreeting { margin-top: 1rem; color: var(--kids-clay); font-size: 0.875rem; font-weight: 700; }
-.heroCopy h1 { max-width: 13ch; margin-top: 0.25rem; color: var(--forest-deep); font-size: 2.875rem; font-weight: 500; line-height: 1.08; overflow-wrap: anywhere; }
-.heroPhrase { margin-top: 0.75rem; color: var(--forest); font-size: 0.75rem; font-weight: 700; letter-spacing: 0.04em; line-height: 1.5; }
-.heroDescription { max-width: 34rem; margin-top: 1rem; color: var(--muted); font-size: 1rem; line-height: 1.7; }
-.heroActions { display: flex; min-width: 0; flex-direction: column; flex-wrap: wrap; align-items: stretch; gap: 0.75rem; margin-top: 1.5rem; }
-.heroActions .primaryAction { gap: 0.65rem; }
-.primarySparkle { display: inline-grid; width: 1.25rem; height: 1.25rem; place-items: center; }
-.primarySparkle svg { width: 1.125rem; height: 1.125rem; }
-.primaryAction,
-.secondaryAction { display: inline-flex; max-width: 100%; min-width: 0; min-height: 2.75rem; align-items: center; justify-content: center; border: 1px solid var(--forest); border-radius: 0.375rem; padding: 0.65rem 1rem; font-size: 0.875rem; font-weight: 600; line-height: 1.35; text-align: center; text-decoration: none; white-space: normal; }
-.primaryAction { background: var(--forest); color: #fff; }
-.secondaryAction { background: rgb(255 255 255 / 45%); color: var(--forest); }
-.primaryAction:hover { background: var(--forest-deep); }
-.secondaryAction:hover { background: #fff; }
-.primaryAction:focus-visible,
-.secondaryAction:focus-visible { outline: 3px solid var(--kids-clay); outline-offset: 3px; }
+/* The same organic bubble language the Kids page hero uses. */
+.introBubble {
+  position: relative;
+  display: flex;
+  min-width: min(72vw, 20rem);
+  min-height: min(54vw, 15rem);
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-top: 0.75rem;
+  border: 5px solid var(--kids-dark);
+  border-radius: 58% 42% 47% 53% / 52% 46% 54% 48%;
+  background: var(--kids-yellow);
+  box-shadow:
+    0 1rem 2rem rgb(22 58 48 / 18%),
+    0 0 3rem rgb(255 224 91 / 55%),
+    inset 0 -1rem 0 rgb(255 255 255 / 30%);
+  animation:
+    bubble-arrive 850ms 1900ms cubic-bezier(0.34, 1.56, 0.64, 1) backwards,
+    bubble-bob 4.8s 3200ms ease-in-out infinite;
+}
 
-.heroWorld,
-.storyArtwork { position: relative; width: 100%; min-width: 0; margin: 0; aspect-ratio: 9 / 6.5; overflow: hidden; border-radius: 1rem; background: var(--kids-sage); }
-.heroWorld { max-width: 42rem; justify-self: center; }
-.heroWorldImage,
-.storyArtwork img { object-fit: cover; }
+.introBubble::before {
+  position: absolute;
+  top: 12%;
+  left: 16%;
+  width: 34%;
+  height: 16%;
+  border-radius: 50%;
+  background: rgb(255 255 255 / 55%);
+  transform: rotate(-18deg);
+  content: "";
+  animation: gloss-drift 6s 3400ms ease-in-out infinite;
+}
+
+.introLightway {
+  position: relative;
+  z-index: 1;
+  font-size: clamp(0.7rem, 2.6vw, 1rem);
+  font-weight: 900;
+  letter-spacing: 0.18em;
+}
+
+.introKids {
+  position: relative;
+  z-index: 1;
+  color: var(--kids-red);
+  font-size: clamp(2.8rem, 13vw, 5.5rem);
+  font-weight: 950;
+  line-height: 0.92;
+  letter-spacing: -0.04em;
+  text-shadow:
+    0 0.06em 0 #fff,
+    0.1em 0.14em 0 rgb(22 58 48 / 12%);
+  animation: kids-bounce-in 700ms 2300ms cubic-bezier(0.34, 1.56, 0.64, 1)
+    backwards;
+}
+
+.introParticle {
+  position: absolute;
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 0 0.5rem rgb(255 255 255 / 90%);
+  opacity: 0;
+  animation: particle-pop 3.2s ease-out infinite;
+}
+
+.introParticleOne {
+  top: 18%;
+  left: 20%;
+  animation-delay: 3s;
+}
+
+.introParticleTwo {
+  top: 30%;
+  right: 16%;
+  width: 0.4rem;
+  height: 0.4rem;
+  animation-delay: 3.7s;
+}
+
+.introParticleThree {
+  right: 34%;
+  bottom: 18%;
+  width: 0.35rem;
+  height: 0.35rem;
+  animation-delay: 4.3s;
+}
+
+.introTagline {
+  margin-top: 0.9rem;
+  color: var(--kids-dark);
+  font-size: clamp(0.95rem, 3.8vw, 1.15rem);
+  font-weight: 800;
+  animation: identity-rise 500ms 3000ms ease-out backwards;
+}
+
+.introPrompt {
+  display: inline-flex;
+  min-height: 2.75rem;
+  align-items: center;
+  margin-top: 0.85rem;
+  border: 3px solid var(--kids-dark);
+  border-radius: 999px;
+  background: #fff;
+  padding: 0.55rem 1.15rem;
+  color: var(--kids-dark);
+  font-size: clamp(0.85rem, 3.6vw, 1rem);
+  font-weight: 900;
+  box-shadow: 0 0.3rem 0 var(--kids-dark);
+  animation: prompt-pop 650ms 3500ms cubic-bezier(0.34, 1.56, 0.64, 1) backwards;
+}
+
+/* =========================================================
+   LIGHTWAY KIDS WORLD
+   ========================================================= */
+
+.page,
+.kidsIntro {
+  --kids-blue: #73d7ff;
+  --kids-yellow: #ffe05b;
+  --kids-pink: #ff7f9f;
+  --kids-orange: #ff9f43;
+  --kids-green: #68d391;
+  --kids-purple: #a78bfa;
+  --kids-red: #ff6f61;
+  --kids-dark: #163a30;
+}
+
+.page {
+  min-width: 0;
+  overflow: hidden;
+  background:
+    radial-gradient(circle at 10% 8%, rgb(255 255 255 / 80%) 0 1.5rem, transparent 1.7rem),
+    radial-gradient(circle at 90% 15%, rgb(255 255 255 / 70%) 0 2rem, transparent 2.2rem),
+    linear-gradient(180deg, #c8f5ff 0%, #fdf7df 42%, #fff 100%);
+  color: var(--kids-dark);
+}
+
+/* HERO */
+
+.hero {
+  position: relative;
+  overflow: hidden;
+  background:
+    radial-gradient(circle at 20% 30%, rgb(255 255 255 / 55%) 0 2rem, transparent 2.2rem),
+    radial-gradient(circle at 82% 20%, rgb(255 255 255 / 55%) 0 3rem, transparent 3.2rem),
+    linear-gradient(180deg, #70d5ff 0%, #c7f4ff 68%, #f9edbd 100%);
+}
+
+.hero::after {
+  position: absolute;
+  right: -5%;
+  bottom: -18%;
+  left: -5%;
+  height: 35%;
+  border-radius: 50% 50% 0 0;
+  background: #70cc76;
+  content: "";
+}
+
+.heroLayout {
+  position: relative;
+  z-index: 2;
+  display: grid;
+  min-width: 0;
+  grid-template-columns: 1fr;
+  align-items: center;
+  gap: 1rem;
+  padding-block: 3rem 5rem;
+}
+
+.heroCopy {
+  min-width: 0;
+  max-width: 42rem;
+  text-align: center;
+  justify-self: center;
+}
+
+.brandLabel,
+.eyebrow {
+  color: #22704c;
+  font-size: 0.75rem;
+  font-weight: 900;
+  letter-spacing: 0.12em;
+}
+
+.heroGreeting {
+  margin-top: 0.75rem;
+  color: var(--kids-red);
+  font-size: 1rem;
+  font-weight: 900;
+}
+
+.heroCopy h1 {
+  margin-top: 0.25rem;
+  color: var(--kids-dark);
+  font-size: clamp(3rem, 12vw, 6rem);
+  font-weight: 950;
+  line-height: 0.95;
+  letter-spacing: -0.05em;
+  text-shadow: 0 0.08em 0 rgb(255 255 255 / 80%);
+}
+
+.heroPhrase {
+  margin-top: 1rem;
+  color: #22704c;
+  font-size: 1rem;
+  font-weight: 800;
+}
+
+.heroDescription {
+  max-width: 32rem;
+  margin: 0.75rem auto 0;
+  color: #31594c;
+  font-size: 0.95rem;
+  line-height: 1.6;
+}
+
+.heroActions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.75rem;
+  margin-top: 1.5rem;
+}
+
+.primaryAction,
+.secondaryAction {
+  display: inline-flex;
+  min-height: 3.2rem;
+  align-items: center;
+  justify-content: center;
+  border: 3px solid var(--kids-dark);
+  border-radius: 999px;
+  padding: 0.75rem 1.4rem;
+  font-size: 0.85rem;
+  font-weight: 900;
+  text-decoration: none;
+  box-shadow: 0 0.35rem 0 var(--kids-dark);
+  transition: transform 160ms ease, box-shadow 160ms ease;
+}
+
+.primaryAction {
+  background: var(--kids-yellow);
+  color: var(--kids-dark);
+}
+
+.secondaryAction {
+  background: #fff;
+  color: var(--kids-dark);
+}
+
+.primaryAction:hover,
+.secondaryAction:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 0.55rem 0 var(--kids-dark);
+}
+
+.primaryAction:active,
+.secondaryAction:active {
+  transform: translateY(2px);
+  box-shadow: 0 0.15rem 0 var(--kids-dark);
+}
+
+.primarySparkle {
+  display: grid;
+  width: 1.3rem;
+  height: 1.3rem;
+  margin-right: 0.4rem;
+  place-items: center;
+  color: var(--kids-orange);
+}
+
+.primarySparkle svg {
+  width: 100%;
+  height: 100%;
+}
+
+/* =========================================================
+   HERO WORLD SCENE
+   Pure decoration (aria-hidden in the markup): every visible
+   layer is CSS, so no child can be focused or announced twice.
+   ========================================================= */
+
+.heroWorld {
+  position: relative;
+  width: min(100%, 38rem);
+  min-width: 0;
+  aspect-ratio: 1 / 0.82;
+  margin-inline: auto;
+  overflow: hidden;
+  border: 5px solid #fff;
+  border-radius: 3rem;
+  background: linear-gradient(
+    180deg,
+    #70d9ff 0%,
+    #b9f3ff 58%,
+    #eaffc4 100%
+  );
+  box-shadow: 0 1.5rem 3rem rgb(22 58 48 / 14%);
+  transform: rotate(-1deg);
+}
+
+.worldSun {
+  position: absolute;
+  top: 6%;
+  right: 7%;
+  z-index: 1;
+  width: 13%;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: var(--kids-yellow);
+  box-shadow:
+    0 0 0 0.6rem rgb(255 224 91 / 30%),
+    0 0 2.5rem rgb(255 224 91 / 70%);
+  animation: sun-glow 5.5s ease-in-out infinite;
+}
+
+.worldSun::before {
+  position: absolute;
+  inset: -26%;
+  border: 3px dashed rgb(255 224 91 / 95%);
+  border-radius: 50%;
+  animation: sun-spin 32s linear infinite;
+  content: "";
+}
+
+.worldCloud {
+  position: absolute;
+  z-index: 1;
+  aspect-ratio: 3 / 1;
+  border-radius: 999px;
+  background: rgb(255 255 255 / 88%);
+  box-shadow: 0 0.4rem 1rem rgb(50 130 160 / 12%);
+  animation: cloud-drift 12s ease-in-out infinite alternate;
+}
+
+.worldCloud::before,
+.worldCloud::after {
+  position: absolute;
+  bottom: 14%;
+  border-radius: 50%;
+  background: inherit;
+  content: "";
+}
+
+.worldCloud::before {
+  left: 13%;
+  width: 38%;
+  height: 115%;
+}
+
+.worldCloud::after {
+  right: 13%;
+  width: 28%;
+  height: 88%;
+}
+
+.worldCloudOne {
+  top: 14%;
+  left: 4%;
+  width: 30%;
+}
+
+.worldCloudTwo {
+  top: 30%;
+  right: 5%;
+  width: 22%;
+  animation-duration: 15s;
+  animation-direction: alternate-reverse;
+}
+
+.worldOrb {
+  position: absolute;
+  z-index: 2;
+  aspect-ratio: 1;
+  border: 3px solid rgb(255 255 255 / 85%);
+  border-radius: 50%;
+  background: rgb(255 255 255 / 32%);
+  box-shadow: inset 0.2rem 0.25rem 0 rgb(255 255 255 / 75%);
+  animation: orb-float 6.5s ease-in-out infinite;
+}
+
+.worldOrbOne {
+  top: 7%;
+  left: 27%;
+  width: 7%;
+}
+
+.worldOrbTwo {
+  top: 10%;
+  right: 30%;
+  width: 5%;
+  animation-delay: -3s;
+  animation-duration: 8s;
+}
+
+.worldHill {
+  position: absolute;
+  border-radius: 50% 50% 0 0;
+}
+
+.worldHillBack {
+  bottom: -6%;
+  left: -10%;
+  z-index: 2;
+  width: 75%;
+  height: 34%;
+  background: #8fe39a;
+}
+
+.worldHillFront {
+  right: -12%;
+  bottom: -8%;
+  z-index: 3;
+  width: 80%;
+  height: 26%;
+  background: var(--kids-green);
+}
+
 .worldSparkleOne,
-.worldSparkleTwo { position: absolute; z-index: 1; width: 0.75rem; height: 0.75rem; border-radius: 50%; background: #f2c879; box-shadow: 0 0 0 0.3rem rgb(255 255 255 / 42%); animation: sparkle-float 3.2s ease-in-out infinite; }
-.worldSparkleOne { top: 20%; left: 19%; }
-.worldSparkleTwo { top: 31%; right: 19%; width: 0.5rem; height: 0.5rem; animation-delay: 0.8s; }
+.worldSparkleTwo {
+  position: absolute;
+  z-index: 4;
+  width: 1rem;
+  height: 1rem;
+  border-radius: 50%;
+  background: var(--kids-yellow);
+  box-shadow: 0 0 0 0.35rem rgb(255 255 255 / 50%);
+  animation: sparkle-float 2.8s ease-in-out infinite;
+}
+
+.worldSparkleOne {
+  top: 15%;
+  left: 18%;
+}
+
+.worldSparkleTwo {
+  top: 24%;
+  right: 14%;
+  animation-delay: 0.7s;
+}
+
+/* LIGHTWAY KIDS bubble identity */
+
+.worldBubble {
+  position: absolute;
+  top: 18%;
+  right: 0;
+  left: 0;
+  z-index: 5;
+  display: flex;
+  width: 46%;
+  aspect-ratio: 1 / 0.8;
+  margin-inline: auto;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border: 5px solid var(--kids-dark);
+  border-radius: 58% 42% 47% 53% / 52% 46% 54% 48%;
+  background: var(--kids-yellow);
+  color: var(--kids-dark);
+  box-shadow:
+    0 1rem 2rem rgb(22 58 48 / 18%),
+    inset 0 -1rem 0 rgb(255 255 255 / 30%);
+  animation:
+    identity-rise 700ms 150ms ease-out both,
+    bubble-bob 4.8s 850ms ease-in-out infinite;
+}
+
+.worldBubble::before {
+  position: absolute;
+  top: 12%;
+  left: 16%;
+  width: 34%;
+  height: 18%;
+  border-radius: 50%;
+  background: rgb(255 255 255 / 55%);
+  transform: rotate(-18deg);
+  content: "";
+}
+
+.worldBubbleKicker {
+  position: relative;
+  z-index: 1;
+  font-size: clamp(0.6rem, 2.4vw, 1.05rem);
+  font-weight: 900;
+  letter-spacing: 0.16em;
+}
+
+.worldBubbleTitle {
+  position: relative;
+  z-index: 1;
+  color: var(--kids-red);
+  font-size: clamp(1.9rem, 7vw, 3.4rem);
+  font-weight: 950;
+  line-height: 0.9;
+  letter-spacing: -0.04em;
+  text-shadow:
+    0 0.06em 0 #fff,
+    0.1em 0.14em 0 rgb(22 58 48 / 12%);
+}
+
+.worldParticle {
+  position: absolute;
+  z-index: 2;
+  width: 0.85rem;
+  height: 0.85rem;
+  border-radius: 50%;
+  opacity: 0;
+  animation: particle-pop 3.2s ease-in-out infinite;
+}
+
+.worldParticleOne {
+  top: -7%;
+  left: 12%;
+  background: var(--kids-pink);
+}
+
+.worldParticleTwo {
+  top: 16%;
+  right: -8%;
+  width: 0.65rem;
+  height: 0.65rem;
+  background: var(--kids-blue);
+  animation-delay: 1s;
+}
+
+.worldParticleThree {
+  bottom: -9%;
+  left: 30%;
+  width: 0.7rem;
+  height: 0.7rem;
+  background: var(--kids-orange);
+  animation-delay: 1.9s;
+}
+
+/* CHARACTERS */
+
+.worldLumi,
+.worldBird,
+.worldSprout {
+  position: absolute;
+  z-index: 6;
+  display: block;
+}
+
+.worldLumi svg,
+.worldBird svg,
+.worldSprout svg {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.worldLumi {
+  bottom: 22%;
+  left: 4%;
+  width: 25%;
+  animation:
+    identity-rise 700ms 500ms ease-out both,
+    lumi-bob 3.4s 1200ms ease-in-out infinite;
+}
+
+.worldBird {
+  top: 46%;
+  right: 6%;
+  width: 16%;
+  animation:
+    identity-rise 700ms 350ms ease-out both,
+    bird-float 4.2s 1050ms ease-in-out infinite;
+}
+
+.worldSprout {
+  right: 10%;
+  bottom: 6%;
+  width: 21%;
+  transform-origin: 50% 100%;
+  animation:
+    identity-rise 700ms 650ms ease-out both,
+    sprout-sway 3.8s 1350ms ease-in-out infinite;
+}
+
+/* =========================================================
+   RESOURCE WORLD
+   ========================================================= */
 
 .experience,
 .storySection,
 .growth,
 .family,
-.journey { min-width: 0; padding-block: 3rem 3.25rem; }
-.contentShell { min-width: 0; max-width: 76rem; }
-.experienceIntro { max-width: 56rem; margin-bottom: 1.75rem; }
-.sectionIntro { max-width: 46rem; margin-bottom: 1.5rem; }
+.journey {
+  position: relative;
+  min-width: 0;
+  padding-block: 4rem;
+}
+
+.contentShell {
+  min-width: 0;
+  max-width: 78rem;
+}
+
+.experience {
+  background:
+    radial-gradient(
+      circle at 7% 14%,
+      rgb(115 215 255 / 32%) 0 2rem,
+      transparent 2.2rem
+    ),
+    radial-gradient(
+      circle at 93% 80%,
+      rgb(104 211 145 / 28%) 0 2.5rem,
+      transparent 2.7rem
+    ),
+    #fff9e8;
+}
+
+.experienceIntro,
+.sectionIntro {
+  max-width: 42rem;
+  margin-inline: auto;
+  margin-bottom: 2rem;
+  text-align: center;
+}
+
 .experienceIntro h2,
 .sectionIntro h2,
 .storyCopy h2,
 .familyCopy h2,
-.journey h2 { max-width: 22ch; margin-top: 0.55rem; color: var(--ink); font-size: 1.875rem; font-weight: 500; line-height: 1.2; overflow-wrap: anywhere; }
-.experienceIntro > p:last-child,
-.sectionIntro > p:last-child { margin-top: 0.65rem; color: var(--muted); font-size: 0.9375rem; line-height: 1.65; }
-.resourceGroups { display: flex; min-width: 0; flex-direction: column; gap: 2.25rem; }
-.resourceGroup { min-width: 0; }
-.groupHeading { display: flex; min-width: 0; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 0.35rem 1rem; margin-bottom: 0.85rem; }
-.groupHeading h3 { color: var(--forest-deep); font-size: 1.125rem; font-weight: 700; }
-.groupHeading p { max-width: 38rem; color: var(--muted); font-size: 0.8125rem; line-height: 1.5; }
-.tileGrid { display: grid; min-width: 0; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0.75rem; margin: 0; padding: 0; list-style: none; }
-.tileItem { min-width: 0; }
-.tile { display: flex; width: 100%; min-width: 0; min-height: 10.5rem; flex-direction: column; align-items: flex-start; gap: 0.5rem; border: 1px solid rgb(22 58 48 / 8%); border-radius: 1rem; padding: 0.85rem; color: var(--forest-deep); text-decoration: none; transition: transform 180ms ease, box-shadow 180ms ease, border-color 180ms ease; }
-.toneSky { background: #dfedf5; }
-.toneLeaf { background: #e1eee1; }
-.toneSun { background: #f6edda; }
-.toneCoral { background: #f4e4dc; }
-.tileIconWrap { display: grid; width: 2.6rem; height: 2.6rem; min-width: 0; place-items: center; border: 1px solid rgb(22 58 48 / 9%); border-radius: 0.85rem; background: rgb(255 255 255 / 78%); color: var(--forest); transition: transform 180ms ease; }
-.tileIcon { width: 1.5rem; height: 1.5rem; }
-.tileTitle { min-width: 0; color: var(--forest-deep); font-size: 0.9375rem; font-weight: 600; line-height: 1.4; overflow-wrap: anywhere; }
-.tileDescription { min-width: 0; margin-top: auto; color: var(--muted); font-size: 0.75rem; line-height: 1.45; overflow-wrap: anywhere; }
-.tileAction { display: inline-flex; min-height: 1.75rem; align-items: center; gap: 0.35rem; color: var(--forest); font-size: 0.6875rem; font-weight: 700; }
-.tileLink:focus-visible { outline: 3px solid var(--forest); outline-offset: 3px; }
-
-@media (hover: hover) and (prefers-reduced-motion: no-preference) {
-  .tile:hover { transform: translateY(-3px) scale(1.015); border-color: rgb(22 58 48 / 18%); box-shadow: 0 10px 24px rgb(22 58 48 / 10%); }
-  .tile:hover .tileIconWrap { transform: translateY(-2px) rotate(-4deg); }
+.journey h2 {
+  margin-top: 0.5rem;
+  color: var(--kids-dark);
+  font-size: clamp(2rem, 6vw, 3.5rem);
+  font-weight: 950;
+  line-height: 1;
+  letter-spacing: -0.04em;
 }
 
-.storySection { background: var(--kids-sage); }
-.storyLayout { display: grid; min-width: 0; grid-template-columns: minmax(0, 1fr); align-items: center; gap: 2rem; }
-.storyArtwork { aspect-ratio: 3 / 2; background: var(--kids-warm); }
-.storyCopy { min-width: 0; max-width: 38rem; }
-.storyCopy h2 { max-width: 19ch; color: var(--forest-deep); }
-.storyCopy > p:not(.eyebrow) { margin-top: 0.85rem; color: var(--muted); font-size: 0.9375rem; line-height: 1.7; }
-.storyCopy .storyNote { border-left: 2px solid var(--kids-sun); padding-left: 0.8rem; color: var(--ink); font-size: 0.8125rem; }
-.growth { background: var(--kids-warm); }
-.growthStages { display: grid; min-width: 0; grid-template-columns: minmax(0, 1fr); margin: 1.75rem 0 0; padding: 0; list-style: none; }
-.growthStages li { min-width: 0; border-top: 2px solid var(--kids-sun); padding: 0.9rem 0.25rem 0.85rem 0; }
-.growthStageMark { display: block; width: 0.7rem; height: 0.7rem; margin-bottom: 0.65rem; border: 2px solid var(--kids-clay); border-radius: 50%; background: #fff; }
-.growthStages h3 { color: var(--forest-deep); font-size: 1rem; font-weight: 600; line-height: 1.4; overflow-wrap: anywhere; }
-.growthNote { margin-top: 0.7rem; color: var(--muted); font-size: 0.8125rem; line-height: 1.55; }
-.family { background: #fff; }
-.familyLayout { display: grid; min-width: 0; grid-template-columns: minmax(0, 1fr); align-items: center; gap: 1.75rem; }
-.familyCopy { min-width: 0; max-width: 42rem; }
-.familyCopy h2 { color: var(--forest-deep); }
-.familyCopy > p:not(.eyebrow) { margin-top: 0.85rem; color: var(--muted); font-size: 0.9375rem; line-height: 1.7; }
-.familyCopy .familySafety { border-left: 2px solid var(--kids-sun); padding-left: 0.8rem; color: var(--ink); font-size: 0.8125rem; }
-.familyPractices { display: grid; min-width: 0; grid-template-columns: repeat(2, minmax(0, 1fr)); margin: 0; border-top: 1px solid var(--rule); padding: 0; list-style: none; }
-.familyPractices li { min-width: 0; border-bottom: 1px solid var(--rule); padding: 0.85rem 0.25rem; color: var(--forest); font-size: 0.875rem; font-weight: 600; }
-.journey { border-top: 1px solid var(--rule); background: var(--kids-sage); }
-.journeySupporting { margin-top: 0.65rem; color: var(--forest); font-size: 1rem; font-weight: 500; }
-.journeyDescription { max-width: 48rem; margin-top: 0.65rem; color: var(--muted); font-size: 0.875rem; line-height: 1.65; }
-.journeyPath { display: flex; min-width: 0; flex-direction: column; align-items: flex-start; gap: 0.55rem; margin: 1.75rem 0 0; padding: 0; list-style: none; }
-.journeyPath li { display: flex; min-width: 0; flex-direction: column; align-items: flex-start; gap: 0.45rem; color: var(--forest-deep); font-size: 0.875rem; font-weight: 600; }
-.journeyNode { max-width: 100%; overflow-wrap: anywhere; }
-.journeyArrow { margin-left: 0.6rem; color: var(--kids-clay); transform: rotate(90deg); }
-.journeyNote { margin-top: 1rem; color: var(--muted); font-size: 0.8125rem; line-height: 1.55; }
+.experienceIntro > p:last-child,
+.sectionIntro > p:last-child {
+  margin-top: 0.75rem;
+  color: #527064;
+  font-size: 0.9rem;
+  line-height: 1.6;
+}
+
+.resourceGroups {
+  display: flex;
+  flex-direction: column;
+  gap: 3rem;
+}
+
+.resourceGroup {
+  min-width: 0;
+}
+
+.groupHeading {
+  margin-bottom: 1.25rem;
+  text-align: center;
+}
+
+.groupHeading h3 {
+  color: #22704c;
+  font-size: 1.3rem;
+  font-weight: 950;
+}
+
+.groupHeading p {
+  margin-top: 0.3rem;
+  color: #527064;
+  font-size: 0.8rem;
+}
+
+/* BIG BUBBLES */
+
+.tileGrid {
+  display: grid;
+  min-width: 0;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.tileItem {
+  min-width: 0;
+}
+
+.tile {
+  position: relative;
+  display: flex;
+  width: 100%;
+  min-height: 10rem;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.55rem;
+  border: 4px solid #fff;
+  border-radius: 2rem;
+  padding: 1rem;
+  color: var(--kids-dark);
+  font: inherit;
+  text-align: center;
+  text-decoration: none;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  appearance: none;
+  box-shadow:
+    0 0.45rem 0 rgb(22 58 48 / 12%),
+    inset 0 0.35rem 0 rgb(255 255 255 / 45%);
+  transform: translateY(0);
+  animation: tile-float 5s ease-in-out infinite;
+  transition:
+    transform 240ms cubic-bezier(0.34, 1.56, 0.64, 1),
+    box-shadow 200ms ease;
+}
+
+.tileItem:nth-child(2) .tile {
+  animation-delay: -0.9s;
+}
+
+.tileItem:nth-child(3) .tile {
+  animation-delay: -1.8s;
+}
+
+.tileItem:nth-child(4) .tile {
+  animation-delay: -2.7s;
+}
+
+.tileItem:nth-child(5) .tile {
+  animation-delay: -1.3s;
+}
+
+.tileItem:nth-child(6) .tile {
+  animation-delay: -2.2s;
+}
+
+.toneSky {
+  background: var(--kids-blue);
+}
+
+.toneLeaf {
+  background: var(--kids-green);
+}
+
+.toneSun {
+  background: var(--kids-yellow);
+}
+
+.toneCoral {
+  background: var(--kids-pink);
+}
+
+.tile::before {
+  position: absolute;
+  top: 0.8rem;
+  left: 1rem;
+  width: 1rem;
+  height: 0.55rem;
+  border-radius: 50%;
+  background: rgb(255 255 255 / 65%);
+  transform: rotate(-25deg);
+  content: "";
+}
+
+.tileIconWrap {
+  display: grid;
+  width: 4.2rem;
+  height: 4.2rem;
+  place-items: center;
+  border: 3px solid #fff;
+  border-radius: 50%;
+  background: rgb(255 255 255 / 80%);
+  box-shadow: 0 0.3rem 0 rgb(22 58 48 / 12%);
+  transition: transform 180ms ease;
+}
+
+.tileIcon {
+  width: 2.2rem;
+  height: 2.2rem;
+  color: var(--kids-dark);
+  stroke-width: 2;
+}
+
+.tileTitle {
+  color: var(--kids-dark);
+  font-size: 1rem;
+  font-weight: 950;
+}
+
+.tileDescription {
+  max-width: 14rem;
+  color: #31594c;
+  font-size: 0.72rem;
+  line-height: 1.4;
+}
+
+.tileAction {
+  color: var(--kids-dark);
+  font-size: 0.7rem;
+  font-weight: 950;
+}
+
+.tile:focus-visible {
+  outline: 4px solid var(--kids-red);
+  outline-offset: 4px;
+}
+
+@media (hover: hover) and (prefers-reduced-motion: no-preference) {
+  .tile:hover {
+    transform: scale(1.05);
+    box-shadow:
+      0 1rem 1.5rem rgb(22 58 48 / 18%),
+      inset 0 0.35rem 0 rgb(255 255 255 / 55%);
+  }
+
+  .tile:hover .tileIconWrap {
+    transform: scale(1.08);
+    animation: tile-wiggle 640ms ease-in-out;
+  }
+}
+
+.tile:active {
+  transform: scale(0.93) translateY(0.15rem);
+  box-shadow:
+    0 0.15rem 0 rgb(22 58 48 / 12%),
+    inset 0 0.35rem 0 rgb(255 255 255 / 45%);
+}
+
+.tile:active .tileIconWrap {
+  transform: scale(1.14);
+}
+
+.tileBurst {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.tileSpark {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0.6rem;
+  height: 0.6rem;
+  border-radius: 50%;
+  background: var(--kids-yellow);
+  opacity: 0;
+  animation: tile-spark 620ms ease-out forwards;
+}
+
+.tileSpark:nth-child(1) {
+  --tx: -2.7rem;
+  --ty: -1.5rem;
+  background: var(--kids-yellow);
+}
+
+.tileSpark:nth-child(2) {
+  --tx: 2.7rem;
+  --ty: -1.5rem;
+  background: var(--kids-orange);
+}
+
+.tileSpark:nth-child(3) {
+  --tx: -3rem;
+  --ty: 0.9rem;
+  background: var(--kids-pink);
+}
+
+.tileSpark:nth-child(4) {
+  --tx: 3rem;
+  --ty: 0.9rem;
+  background: var(--kids-blue);
+}
+
+.tileSpark:nth-child(5) {
+  --tx: -1.4rem;
+  --ty: -2.6rem;
+  background: var(--kids-green);
+}
+
+.tileSpark:nth-child(6) {
+  --tx: 1.4rem;
+  --ty: -2.6rem;
+  background: var(--kids-purple);
+}
+
+.tileSoon {
+  position: absolute;
+  left: 50%;
+  bottom: 0.7rem;
+  z-index: 3;
+  border: 3px solid #fff;
+  border-radius: 999px;
+  background: var(--kids-dark);
+  padding: 0.35rem 0.8rem;
+  color: #fff;
+  font-size: 0.72rem;
+  font-weight: 900;
+  white-space: nowrap;
+  animation: tile-soon 1500ms ease forwards;
+}
+
+/* =========================================================
+   STORY
+   ========================================================= */
+
+.storySection {
+  background: #bdf2ff;
+}
+
+.storyLayout {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2rem;
+  align-items: center;
+}
+
+.storyArtwork {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1 / 0.8;
+  overflow: hidden;
+  border: 4px solid #fff;
+  border-radius: 2.5rem;
+  background: var(--kids-yellow);
+  box-shadow: 0 0.7rem 0 rgb(22 58 48 / 12%);
+  transform: rotate(1deg);
+}
+
+.storyArtwork img {
+  object-fit: cover;
+}
+
+.storyCopy {
+  text-align: center;
+}
+
+.storyCopy h2 {
+  color: var(--kids-dark);
+}
+
+.storyCopy > p:not(.eyebrow) {
+  margin-top: 0.9rem;
+  color: #31594c;
+  font-size: 0.95rem;
+  line-height: 1.7;
+}
+
+.storyCopy .storyNote {
+  display: inline-block;
+  margin-top: 1rem;
+  border: 3px solid #fff;
+  border-radius: 1.25rem;
+  background: var(--kids-yellow);
+  padding: 0.8rem 1rem;
+  color: var(--kids-dark);
+  font-size: 0.8rem;
+  font-weight: 800;
+}
+
+/* =========================================================
+   GROWTH
+   ========================================================= */
+
+.growth {
+  background: #fff;
+}
+
+.growthStages {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+  margin: 2rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.growthStages li {
+  position: relative;
+  border: 4px solid #fff;
+  border-radius: 1.75rem;
+  background: var(--kids-purple);
+  padding: 1.25rem;
+  box-shadow: 0 0.4rem 0 rgb(22 58 48 / 12%);
+  text-align: center;
+}
+
+.growthStages li:nth-child(2) {
+  background: var(--kids-blue);
+}
+
+.growthStages li:nth-child(3) {
+  background: var(--kids-green);
+}
+
+.growthStageMark {
+  display: block;
+  width: 1.1rem;
+  height: 1.1rem;
+  margin: 0 auto 0.6rem;
+  border: 3px solid #fff;
+  border-radius: 50%;
+  background: var(--kids-yellow);
+}
+
+.growthStages h3 {
+  color: var(--kids-dark);
+  font-size: 1rem;
+  font-weight: 950;
+}
+
+.growthNote {
+  margin-top: 1rem;
+  color: #527064;
+  font-size: 0.75rem;
+  text-align: center;
+}
+
+/* =========================================================
+   FAMILY
+   ========================================================= */
+
+.family {
+  background: #ffeeb5;
+}
+
+.familyLayout {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2rem;
+  align-items: center;
+}
+
+.familyCopy {
+  max-width: 40rem;
+  text-align: center;
+  justify-self: center;
+}
+
+.familyCopy h2 {
+  color: var(--kids-dark);
+}
+
+.familyCopy > p:not(.eyebrow) {
+  margin-top: 0.8rem;
+  color: #31594c;
+  font-size: 0.9rem;
+  line-height: 1.65;
+}
+
+.familyCopy .familySafety {
+  display: inline-block;
+  border: 3px solid #fff;
+  border-radius: 1.25rem;
+  background: #fff;
+  padding: 0.8rem 1rem;
+  font-size: 0.75rem;
+}
+
+.familyPractices {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.8rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.familyPractices li {
+  border: 3px solid #fff;
+  border-radius: 1.5rem;
+  background: rgb(255 255 255 / 75%);
+  padding: 1rem;
+  color: #22704c;
+  font-size: 0.8rem;
+  font-weight: 900;
+  text-align: center;
+  box-shadow: 0 0.3rem 0 rgb(22 58 48 / 8%);
+}
+
+/* =========================================================
+   JOURNEY
+   ========================================================= */
+
+.journey {
+  background:
+    radial-gradient(circle at 10% 20%, rgb(255 224 91 / 60%) 0 2rem, transparent 2.2rem),
+    radial-gradient(circle at 90% 70%, rgb(255 127 159 / 50%) 0 2.5rem, transparent 2.7rem),
+    #c8f5ff;
+  text-align: center;
+}
+
+.journeySupporting {
+  margin-top: 0.7rem;
+  color: #22704c;
+  font-size: 1rem;
+  font-weight: 800;
+}
+
+.journeyDescription {
+  max-width: 44rem;
+  margin: 0.7rem auto 0;
+  color: #527064;
+  font-size: 0.85rem;
+  line-height: 1.6;
+}
+
+.journeyPath {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.6rem;
+  margin: 2rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.journeyPath li {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.journeyNode {
+  display: inline-flex;
+  min-width: 8rem;
+  min-height: 3rem;
+  align-items: center;
+  justify-content: center;
+  border: 4px solid #fff;
+  border-radius: 999px;
+  background: var(--kids-yellow);
+  padding: 0.6rem 1rem;
+  color: var(--kids-dark);
+  font-size: 0.8rem;
+  font-weight: 950;
+  box-shadow: 0 0.35rem 0 rgb(22 58 48 / 12%);
+}
+
+.journeyPath li:nth-child(2) .journeyNode {
+  background: var(--kids-green);
+}
+
+.journeyPath li:nth-child(3) .journeyNode {
+  background: var(--kids-pink);
+}
+
+.journeyPath li:nth-child(4) .journeyNode {
+  background: var(--kids-blue);
+}
+
+.journeyArrow {
+  color: var(--kids-red);
+  font-size: 1.5rem;
+  font-weight: 950;
+  transform: rotate(90deg);
+}
+
+.journeyNote {
+  margin-top: 1rem;
+  color: #527064;
+  font-size: 0.75rem;
+}
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
 
 @media (min-width: 40rem) {
-  .experience, .storySection, .growth, .family, .journey { padding-block: 3.75rem 4rem; }
-  .tileGrid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
-  .tile { min-height: 11rem; padding: 1rem; }
-  .growthStages { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1.25rem; }
+  .experience,
+  .storySection,
+  .growth,
+  .family,
+  .journey {
+    padding-block: 5rem;
+  }
+
+  .tileGrid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .tile {
+    min-height: 12rem;
+  }
+
+  .growthStages {
+    grid-template-columns: repeat(3, 1fr);
+  }
 }
 
 @media (min-width: 52rem) {
-  .heroLayout { grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr); gap: 3rem; padding-block: 4rem; }
-  .heroCopy h1 { font-size: 3.5rem; }
-  .heroActions { flex-direction: row; align-items: center; }
-  .storyLayout { grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr); gap: 3rem; }
-  .familyLayout { grid-template-columns: minmax(0, 1.1fr) minmax(17rem, 0.9fr); gap: 3rem; }
+  .heroLayout {
+    grid-template-columns: 0.9fr 1.1fr;
+    gap: 2rem;
+    padding-block: 4rem 6rem;
+  }
+
+  .heroCopy {
+    text-align: left;
+  }
+
+  .heroDescription {
+    margin-inline: 0;
+  }
+
+  .heroActions {
+    justify-content: flex-start;
+  }
+
+  .heroWorld {
+    width: 100%;
+  }
+
+  .storyLayout {
+    grid-template-columns: 1fr 1fr;
+    gap: 3rem;
+  }
+
+  .storyCopy {
+    text-align: left;
+  }
+
+  .familyLayout {
+    grid-template-columns: 1fr 1fr;
+    gap: 3rem;
+  }
+
+  .familyCopy {
+    text-align: left;
+    justify-self: start;
+  }
 }
 
 @media (min-width: 72rem) {
-  .tileGrid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
-  .heroCopy h1 { font-size: 4rem; }
-  .journeyPath { flex-direction: row; align-items: center; justify-content: space-between; gap: 0.75rem; }
-  .journeyPath li { min-width: 0; flex-direction: row; align-items: center; gap: 0.75rem; }
-  .journeyArrow { margin-left: 0; transform: none; }
+  .tileGrid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
+  .tile {
+    min-height: 13rem;
+    border-radius: 2.25rem;
+  }
+
+  .journeyPath {
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  .journeyPath li {
+    flex-direction: row;
+  }
+
+  .journeyArrow {
+    transform: none;
+  }
 }
 
-@keyframes cloud-drift { from { translate: -0.4rem 0; } to { translate: 0.9rem 0.2rem; } }
-@keyframes sparkle-float { 0%, 100% { opacity: 0.75; transform: translateY(0) scale(0.92); } 50% { opacity: 1; transform: translateY(-0.5rem) scale(1.08); } }
-@keyframes identity-rise { from { opacity: 0; transform: translateY(0.8rem); } to { opacity: 1; transform: translateY(0); } }
-@keyframes kids-bounce-in { 0% { opacity: 0; transform: translateY(1.1rem) scale(0.94); } 70% { opacity: 1; transform: translateY(-0.2rem) scale(1.025); } 100% { opacity: 1; transform: translateY(0) scale(1); } }
+/* =========================================================
+   ANIMATIONS
+   ========================================================= */
+
+@keyframes cloud-drift {
+  from {
+    translate: -0.5rem 0;
+  }
+
+  to {
+    translate: 1rem 0.3rem;
+  }
+}
+
+@keyframes sparkle-float {
+  0%,
+  100% {
+    opacity: 0.75;
+    transform: translateY(0) scale(0.9);
+  }
+
+  50% {
+    opacity: 1;
+    transform: translateY(-0.6rem) scale(1.15);
+  }
+}
+
+@keyframes identity-rise {
+  from {
+    opacity: 0;
+    transform: translateY(1rem) scale(0.96);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes kids-bounce-in {
+  0% {
+    opacity: 0;
+    transform: translateY(1.5rem) scale(0.75);
+  }
+
+  65% {
+    opacity: 1;
+    transform: translateY(-0.4rem) scale(1.08);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes tile-float {
+  0%,
+  100% {
+    translate: 0 0;
+  }
+
+  50% {
+    translate: 0 -0.45rem;
+  }
+}
+
+@keyframes tile-wiggle {
+  0%,
+  100% {
+    rotate: 0deg;
+  }
+
+  25% {
+    rotate: -8deg;
+  }
+
+  75% {
+    rotate: 8deg;
+  }
+}
+
+@keyframes tile-spark {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.3);
+  }
+
+  30% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 0;
+    transform: translate(
+        calc(-50% + var(--tx, 0)),
+        calc(-50% + var(--ty, 0))
+      )
+      scale(1);
+  }
+}
+
+@keyframes tile-soon {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, 0.5rem) scale(0.85);
+  }
+
+  12%,
+  68% {
+    opacity: 1;
+    transform: translate(-50%, 0) scale(1);
+  }
+
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -0.4rem) scale(1);
+  }
+}
+
+@keyframes sun-glow {
+  0%,
+  100% {
+    scale: 1;
+  }
+
+  50% {
+    scale: 1.06;
+  }
+}
+
+@keyframes sun-spin {
+  to {
+    rotate: 360deg;
+  }
+}
+
+@keyframes orb-float {
+  0%,
+  100% {
+    opacity: 0.65;
+    translate: 0 0.6rem;
+  }
+
+  50% {
+    opacity: 1;
+    translate: 0 -0.8rem;
+  }
+}
+
+@keyframes bubble-bob {
+  0%,
+  100% {
+    translate: 0 0;
+  }
+
+  50% {
+    translate: 0 -0.7rem;
+  }
+}
+
+@keyframes particle-pop {
+  0% {
+    opacity: 0;
+    scale: 0.4;
+    translate: 0 0.5rem;
+  }
+
+  35% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 0;
+    scale: 1;
+    translate: 0 -1.1rem;
+  }
+}
+
+@keyframes lumi-bob {
+  0%,
+  100% {
+    translate: 0 0;
+  }
+
+  50% {
+    translate: 0 -0.6rem;
+  }
+}
+
+@keyframes bird-float {
+  0%,
+  100% {
+    rotate: -3deg;
+    translate: 0 0;
+  }
+
+  50% {
+    rotate: 3deg;
+    translate: 0 -0.8rem;
+  }
+}
+
+@keyframes sprout-sway {
+  0%,
+  100% {
+    rotate: -2.5deg;
+  }
+
+  50% {
+    rotate: 2.5deg;
+  }
+}
+
+/* =========================================================
+   INTRO CHOREOGRAPHY KEYFRAMES
+   Entrance animations all end on the element's resting state
+   and use `backwards` fill, so nothing stays locked in place
+   and nothing fights the exit transitions.
+   ========================================================= */
+
+@keyframes intro-open {
+  from {
+    opacity: 0;
+    transform: scale(1.05);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes intro-fade {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes intro-pop {
+  from {
+    opacity: 0;
+    scale: 0.3;
+  }
+
+  to {
+    opacity: 1;
+    scale: 1;
+  }
+}
+
+@keyframes hill-settle {
+  from {
+    opacity: 0;
+    translate: 0 8%;
+  }
+
+  to {
+    opacity: 1;
+    translate: 0 0;
+  }
+}
+
+@keyframes bubble-arrive {
+  0% {
+    opacity: 0;
+    transform: translateY(1.25rem) scale(0.8);
+  }
+
+  62% {
+    opacity: 1;
+    transform: translateY(-0.3rem) scale(1.05);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes prompt-pop {
+  0% {
+    opacity: 0;
+    transform: translateY(0.75rem) scale(0.7);
+  }
+
+  60% {
+    opacity: 1;
+    transform: translateY(-0.15rem) scale(1.06);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes gloss-drift {
+  0%,
+  100% {
+    transform: rotate(-18deg) translate(0, 0);
+  }
+
+  50% {
+    transform: rotate(-12deg) translate(8%, 14%);
+  }
+}
 
 @media (prefers-reduced-motion: reduce) {
-  .kidsIntro { display: none; }
-  .kidsIntro *, .tile, .tileIconWrap, .worldSparkleOne, .worldSparkleTwo { animation: none !important; transition: none !important; }
-  .introLightway, .introKids, .introTagline { opacity: 1; transform: none; }
+  /* The intro becomes a still title card instead of being
+     removed, so reduced-motion users still receive the
+     Lightway Kids identity. Only the closing opacity fade is
+     kept — an opacity fade carries no motion. */
+  .kidsIntro {
+    transition-duration: 500ms !important;
+  }
+
+  .kidsIntro *,
+  .kidsIntro *::before,
+  .kidsIntro *::after,
+  .tile,
+  .tileIconWrap,
+  .tileBurst,
+  .tileSpark,
+  .tileSoon,
+  .heroWorld,
+  .heroWorld *,
+  .heroWorld *::before,
+  .heroWorld *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+
+  .tile:active {
+    transform: none;
+    opacity: 0.9;
+  }
+
+  .tile:active .tileIconWrap {
+    transform: none;
+  }
 }
