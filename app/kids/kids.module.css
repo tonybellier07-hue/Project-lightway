@@ -1,9 +1,10 @@
 /* =========================================================
    LIGHTWAY KIDS INTRO
-   A deliberate five-second opening of the Kids world:
-   0.0-1.0s the world opens, 1.0-2.0s the SDA identity lands,
-   2.0-3.5s the LIGHTWAY KIDS bubble arrives, 3.5-4.5s the
-   adventure prompt, 4.5-5.0s the hand-off into the page.
+   A deliberate seven-and-a-half-second opening of the Kids world:
+   0.0-1.0s the world opens, 1.0-2.0s the SDA identity and star
+   land, 1.9-3.5s the LIGHTWAY KIDS bubble, KIDS and tagline
+   arrive, 5.5-6.2s the adventure prompt, 7.0-7.5s the hand-off
+   into the page.
    The stage reuses the Kids page sky + horizon verbatim so
    the reveal reads as one continuous space, not a loading
    screen that cuts away.
@@ -27,7 +28,7 @@
   pointer-events: none;
 }
 
-/* Exit choreography (4.5s -> 5.0s): the identity lifts away
+/* Exit choreography (7.0s -> 7.5s): the identity lifts away
    while the world pushes forward, so the page underneath
    feels like somewhere the child has entered. Transitions
    live on these rules only, so the entrance animations never
@@ -390,7 +391,56 @@
   font-size: clamp(0.85rem, 3.6vw, 1rem);
   font-weight: 900;
   box-shadow: 0 0.3rem 0 var(--kids-dark);
-  animation: prompt-pop 650ms 3500ms cubic-bezier(0.34, 1.56, 0.64, 1) backwards;
+  animation: prompt-pop 650ms 5500ms cubic-bezier(0.34, 1.56, 0.64, 1) backwards;
+}
+
+/* =========================================================
+   INTRO BIBLE WORLD (app/components/kids-bible-scenes.tsx)
+   Both layers sit inside .introStage, whose z-index: 0 makes it a
+   stacking context — the identity at z5 in the parent context can
+   never be covered by this art. Entrances end by 2.9s and keep only
+   `backwards` fill, so base styles are fully visible and reduced
+   motion shows a static scene.
+   ========================================================= */
+
+.introStar {
+  position: absolute;
+  z-index: 6;
+  top: 6%;
+  left: 50%;
+  width: clamp(44px, 9vw, 92px);
+  aspect-ratio: 1;
+  translate: -50% 0;
+  pointer-events: none;
+  animation:
+    star-reveal 900ms 1000ms cubic-bezier(0.22, 0.61, 0.36, 1) backwards,
+    star-shimmer 3.4s 1900ms ease-in-out infinite;
+}
+
+.introStar [data-part="rays"] {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: star-rays 60s linear infinite;
+}
+
+/* Height-driven: always fits the band between the identity and the
+   bottom edge (~14px clearance at 375x667, ~61px at 1440x900). */
+.introNativity {
+  position: absolute;
+  z-index: 5;
+  right: 0;
+  bottom: 4%;
+  left: 0;
+  width: 100%;
+  height: clamp(64px, 17vh, 230px);
+  pointer-events: none;
+  animation:
+    nativity-rise 900ms 2000ms cubic-bezier(0.22, 0.61, 0.36, 1) backwards,
+    nativity-breath 5s 3000ms ease-in-out infinite;
+}
+
+.introNativity [data-part="glow"] {
+  animation: glow-pulse 3600ms 2900ms ease-in-out infinite;
 }
 
 /* =========================================================
@@ -1852,6 +1902,88 @@
 
   50% {
     transform: rotate(-12deg) translate(8%, 14%);
+  }
+}
+
+/* Bethlehem star — a distinct, slower reveal than the three quick
+   sparkle pops, then a gentle idle shimmer. */
+@keyframes star-reveal {
+  0% {
+    opacity: 0;
+    scale: 0.4;
+    rotate: -40deg;
+  }
+
+  62% {
+    opacity: 1;
+    scale: 1.12;
+    rotate: 6deg;
+  }
+
+  100% {
+    opacity: 1;
+    scale: 1;
+    rotate: 0deg;
+  }
+}
+
+@keyframes star-shimmer {
+  0%,
+  100% {
+    opacity: 1;
+    scale: 1;
+  }
+
+  50% {
+    opacity: 0.88;
+    scale: 1.05;
+  }
+}
+
+@keyframes star-rays {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Nativity — rises with the bubble, then breathes; the manger glow
+   keeps a soft pulse. */
+@keyframes nativity-rise {
+  0% {
+    opacity: 0;
+    transform: translateY(1.5rem) scale(0.96);
+  }
+
+  62% {
+    opacity: 1;
+    transform: translateY(-0.25rem) scale(1.01);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes nativity-breath {
+  0%,
+  100% {
+    translate: 0 0;
+  }
+
+  50% {
+    translate: 0 -0.35rem;
+  }
+}
+
+@keyframes glow-pulse {
+  0%,
+  100% {
+    opacity: 0.7;
+  }
+
+  50% {
+    opacity: 1;
   }
 }
 
